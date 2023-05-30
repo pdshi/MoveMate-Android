@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">MoveMate</string>
+    <string name="sign_in_string">Sign In</string>
+    <string name="email_string">email</string>
+    <string name="password_string">password</string>
+    <string name="sign_in_with_google">Sign In with Google</string>
+    <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign Up</string>
+    <string name="register">Register</string>
+    <string name="sign_up_with_google">Sign Up with Google</string>
+    <string name="or">Or</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="arrow_back">arrow back</string>
+    <string name="iv_regis">iv_regis</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="enter_your_name">enter your name</string>
+    <string name="your_name">Your Name</string>
+    <string name="further_info">Further information to help us determined your exercise plan</string>
+    <string name="age">age</string>
+    <string name="height_cm">height (cm)</string>
+    <string name="weight_kg">weight (kg)</string>
+    <string name="next">Next</string>
+    <string name="goal">Goal</string>
+    <string name="lose_weight">Lose Weight</string>
+    <string name="healthy">Healthy</string>
+    <string name="gain_muscle">Gain Muscle</string>
+    <string name="spare_days">Your spare days in a week</string>
+    <string name="get_your_plan">Get Your Plan</string>
+    <string name="welcome">Welcome,</string>
+    <string name="name_here">name here</string>
+    <string name="email_here">email here</string>
+    <string name="profile">profile</string>
+    <string name="logout">logout</string>
+    <string name="profile_placeholder">profile placeholder</string>
+    <string name="bottom_bar">bottom bar</string>
+    <string name="home_vector">home vector</string>
+    <string name="daily_vector">daily vector</string>
+    <string name="profile_text_vector">profile text vector</string>
+    <string name="my_plan">My Plan</string>
+    <string name="workouts">Workouts</string>
+    <string name="schedule">Schedule</string>
+    <string name="instruction">Instruction</string>
+    <string name="start">Start</string>
+
+
+    <string-array name="workout_name_detail">
+        <item>Sit Up</item>
+        <item>Push Up</item>
+        <item>Jumping Jack</item>
+    </string-array>
+
+    <string-array name="workout_instruction">
+        <item>To perform a sit-up, lie down on a mat with your back flat against the ground and your knees bent.\nPlace your hands behind your head or cross them over your chest. Engage your core muscles, exhale as you lift your upper body off the ground, and curl your spine to bring your chest towards your knees.\nInhale as you lower back down, keeping your neck relaxed. </item>
+        <item>To do a push-up, start in a high plank position with your hands slightly wider than shoulder-width apart.\nLower your body by bending your elbows, keeping them close to your sides, until your chest nearly touches the ground.\nPush back up to the starting position by straightening your arms. Keep your body in a straight line throughout the movement, engaging your core and exhaling as you push up. </item>
+        <item>JTo do a jumping jack, start by standing upright with your feet together and your arms resting at your sides.\nIn one fluid motion, jump up and spread your legs wider than shoulder-width apart while simultaneously raising your arms out to the sides and above your head.\nYour body should resemble an "X" shape. Quickly jump back to the starting position by bringing your feet together and lowering your arms back down to your sides.</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.auth.RegisterActivity"
+    android:background="@color/offWhite">
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="600dp"
+        android:layout_height="wrap_content"
+        android:alpha="0.2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/register_page"
+        android:contentDescription="@string/iv_regis" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="52dp"
+        android:fontFamily="@font/helvetica_neue_bold"
+        android:text="@string/register"
+        android:textColor="@color/orange"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.stevennt.movemate.ui.utils.CustomButton
+        android:id="@+id/signup_with_google_button"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="180dp"
+        android:layout_marginEnd="157dp"
+        android:backgroundTint="@color/gray"
+        android:fontFamily="@font/helvetica_neue_bold"
+        android:hint="@string/sign_up_with_google"
+        android:textAllCaps="false"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.523"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:fontFamily="@font/helvetica_neue_bold"
+        android:text="@string/or"
+        android:textColor="@color/orange"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signup_with_google_button" />
+
+    <com.stevennt.movemate.ui.utils.CustomEditText
+        android:id="@+id/editTextTextEmailAddress_register"
+        android:layout_width="300dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/border_edittext"
+        android:ems="10"
+        android:fontFamily="@font/helvetica_neue_bold"
+        android:hint="@string/email_string"
+        android:inputType="textEmailAddress"
+        android:textAlignment="viewStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <com.stevennt.movemate.ui.utils.CustomEditText
+        android:id="@+id/editTextTextpassword_register"
+        android:layout_width="300dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/border_edittext"
+        android:ems="10"
+        android:fontFamily="@font/helvetica_neue_bold"
+        android:hint="@string/password_string"
+        android:inputType="textPassword"
+        android:textAlignment="viewStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress_register" />
+
+    <com.stevennt.movemate.ui.utils.CustomEditText
+        android:id="@+id/editTextTextConfirmPassword_register"
+        android:layout_width="300dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/border_edittext"
+        android:ems="10"
+        android:fontFamily="@font/helvetica_neue_bold"
+        android:hint="@string/confirm_password"
+        android:inputType="textPassword"
+        android:textAlignment="viewStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextpassword_register" />
+
+    <com.stevennt.movemate.ui.utils.CustomButton
+        android:id="@+id/login_button"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="56dp"
+        android:fontFamily="@font/helvetica_neue_bold"
+        android:hint="@string/sign_in_string"
+        android:textAllCaps="false"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextConfirmPassword_register" />
+
+    <ImageView
+        android:id="@+id/back_regis"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="68dp"
+        app:layout_constraintEnd_toStartOf="@+id/textView"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_back"
+        android:contentDescription="@string/arrow_back"
+        android:clickable="true"
+        android:focusable="true"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
