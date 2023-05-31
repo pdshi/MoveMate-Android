@@ -30,7 +30,7 @@
         app:srcCompat="@drawable/bottom_bar" />
 
     <ImageView
-        android:id="@+id/imageView17"
+        android:id="@+id/iv_daily_athome"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="42dp"
@@ -45,7 +45,7 @@
         tools:ignore="TouchTargetSizeCheck" />
 
     <ImageView
-        android:id="@+id/imageView20"
+        android:id="@+id/iv_profile_athome"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginEnd="32dp"

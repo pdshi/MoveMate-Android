@@ -1,6 +1,7 @@
 package com.stevennt.movemate.ui.home
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
@@ -11,6 +12,9 @@ import com.stevennt.movemate.R
 import com.stevennt.movemate.data.model.Workouts
 import com.stevennt.movemate.databinding.ActivityDetailBinding
 import com.stevennt.movemate.databinding.ActivityHomeBinding
+import com.stevennt.movemate.ui.daily.DailyActivity
+import com.stevennt.movemate.ui.detail.DetailActivity
+import com.stevennt.movemate.ui.profile.ProfileActivity
 
 @Suppress("DEPRECATION")
 class HomeActivity : AppCompatActivity() {
@@ -32,6 +36,16 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.hide()
+
+        binding.ivDailyAthome.setOnClickListener{
+            val intent = Intent(this, DailyActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.ivProfileAthome.setOnClickListener{
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
 
         rvWorkout = binding.rvListWorkout
         list.addAll(getListWorkout())

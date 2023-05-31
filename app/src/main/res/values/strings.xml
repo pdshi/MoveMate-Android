@@ -43,6 +43,9 @@
     <string name="instruction">Instruction</string>
     <string name="start">Start</string>
     <string name="focus_area">Focus Area</string>
+    <string name="in_total">In Total</string>
+    <string name="this_week">This Week</string>
+    <string name="calories_kcal">Calories (Kcal)</string>
 
 
     <string-array name="workout_name_detail">
