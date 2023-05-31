@@ -103,13 +103,14 @@
                 android:fontFamily="@font/helvetica_neue_bold"
                 android:text="@string/workouts"
                 android:textSize="20sp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:textColor="@color/gray"/>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_list_workout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="16dp"
                 />
 
