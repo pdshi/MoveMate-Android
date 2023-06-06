@@ -36,7 +36,7 @@ class DetailActivity : AppCompatActivity() {
         binding.tvDetail.text = dataWorkouts.name
         binding.ivDetail.setImageResource(dataWorkouts.icon)
         binding.tvInstruction.text = dataWorkouts.instruction
-        dataWorkouts.focusArea?.let { binding.ivMuscleDetail.setImageResource(it) }
+        dataWorkouts.focusArea.let { binding.ivMuscleDetail.setImageResource(it) }
 
     }
 }

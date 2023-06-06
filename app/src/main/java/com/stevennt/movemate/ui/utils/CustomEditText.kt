@@ -10,6 +10,8 @@ import android.util.AttributeSet
 import android.util.Patterns
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.marginRight
 import com.stevennt.movemate.R
@@ -68,22 +70,23 @@ class CustomEditText: androidx.appcompat.widget.AppCompatEditText {
                                 error = "Password must be at least 8 characters"
                                 isValid = false
                             } else {
+                                isValid = true
 
-                                // Validate confirm password
-                                val confirmPasswordEditText: EditText = findViewById(R.id.editTextTextConfirmPassword_register)
-                                val confirmPassword = confirmPasswordEditText.text?.toString() ?: ""
+                                /*// Validate confirm password
+                                val confirmPasswordEditText: EditText? = findViewById(R.id.editTextTextConfirmPassword_register)
+                                val confirmPassword = confirmPasswordEditText?.text?.toString() ?: ""
 
                                 if (text!!.toString() != confirmPassword) {
-                                    confirmPasswordEditText.error = "Passwords do not match"
+                                    Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
                                     isValid = false
                                 } else {
                                     isValid = true
-                                }
+                                }*/
                             }
                         }
                     }
                 }else{
-                    error = "Error"
+                    error = "This field is required"
                     isValid = false
                 }
             }

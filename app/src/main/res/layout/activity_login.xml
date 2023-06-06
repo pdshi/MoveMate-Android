@@ -29,23 +29,23 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <com.stevennt.movemate.ui.utils.CustomEditText
-        android:id="@+id/editTextTextEmailAddress_login"
+        android:id="@+id/et_emaillogin"
         android:layout_width="300dp"
         android:layout_height="43dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="56dp"
         android:background="@drawable/border_edittext"
         android:ems="10"
-        android:hint="@string/email_string"
         android:fontFamily="@font/helvetica_neue_bold"
+        android:hint="@string/email_string"
         android:inputType="textEmailAddress"
         android:textAlignment="viewStart"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <com.stevennt.movemate.ui.utils.CustomEditText
-        android:id="@+id/editTextTextPassword_login"
+        android:id="@+id/et_passwordlogin"
         android:layout_width="300dp"
         android:layout_height="43dp"
         android:layout_marginTop="20dp"
@@ -57,22 +57,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress_login" />
+        app:layout_constraintTop_toBottomOf="@+id/et_emaillogin" />
 
     <com.stevennt.movemate.ui.utils.CustomButton
         android:id="@+id/login_button"
         android:layout_width="180dp"
         android:layout_height="40dp"
         android:layout_marginStart="160dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="56dp"
         android:layout_marginEnd="157dp"
-        android:hint="@string/sign_in_string"
         android:fontFamily="@font/helvetica_neue_bold"
+        android:hint="@string/sign_in_string"
         android:textAllCaps="false"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword_login" />
+        app:layout_constraintTop_toBottomOf="@+id/et_passwordlogin" />
 
     <com.stevennt.movemate.ui.utils.CustomButton
         android:id="@+id/login_with_google_button"
