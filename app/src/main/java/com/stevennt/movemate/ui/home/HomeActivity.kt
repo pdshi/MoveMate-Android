@@ -22,6 +22,7 @@ import com.stevennt.movemate.preference.UserPreferences
 import com.stevennt.movemate.ui.auth.LoginActivity
 import com.stevennt.movemate.ui.daily.DailyActivity
 import com.stevennt.movemate.ui.detail.DetailActivity
+import com.stevennt.movemate.ui.myplan.MyPlanActivity
 import com.stevennt.movemate.ui.profile.ProfileActivity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -56,6 +57,11 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.ivMyplan.setOnClickListener{
+            val intent = Intent(this, MyPlanActivity::class.java)
+            startActivity(intent)
+        }
+
         setupRecyclerView()
         getUserSession()
     }
@@ -68,7 +74,12 @@ class HomeActivity : AppCompatActivity() {
         val dataFocusArea = resources.obtainTypedArray(R.array.workout_focus_area)
 
         for (i in dataName.indices) {
-            val workout = Workouts(dataName[i], dataIcon.getResourceId(i, -1), dataInstruction[i], dataFocusArea.getResourceId(i, -1))
+            val workout = Workouts(
+                dataName[i],
+                dataIcon.getResourceId(i, -1),
+                dataInstruction[i],
+                dataFocusArea.getResourceId(i, -1)
+            )
             list.add(workout)
         }
 

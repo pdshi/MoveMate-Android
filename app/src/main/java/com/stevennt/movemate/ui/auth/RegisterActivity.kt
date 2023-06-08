@@ -90,7 +90,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
             override fun afterTextChanged(p0: Editable?) {
                 with(binding) {
-                    btnRegis.isEnabled = etEmailregis.isValid && etPasswordregis.isValid && etPasswordregis.text.toString() == etConfirmpassword.text.toString()
+                    btnRegis.isEnabled = etEmailregis.isValid && etPasswordregis.isValid
                 }
             }
 
@@ -118,8 +118,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                                 }
                                 is Resource.Success -> {
                                     showLoading(false)
-                                    Log.d(TAG, "Login Error: ${result.data}")
-                                    Intent(this@RegisterActivity, GenderActivity::class.java).apply {
+                                    Intent(this@RegisterActivity, LoginActivity::class.java).apply {
                                         startActivity(this)
                                         finish()
                                     }
@@ -137,6 +136,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
+
 
     private fun signUp() {
         val signInIntent = googleSignInClient.signInIntent

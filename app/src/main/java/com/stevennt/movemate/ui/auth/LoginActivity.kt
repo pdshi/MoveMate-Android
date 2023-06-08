@@ -28,6 +28,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.stevennt.movemate.R
 import com.stevennt.movemate.data.Resource
+import com.stevennt.movemate.data.network.response.GetUserResp
+import com.stevennt.movemate.data.network.response.LoginResp
+import com.stevennt.movemate.data.model.UserData
 import com.stevennt.movemate.databinding.ActivityLoginBinding
 import com.stevennt.movemate.preference.UserPreferences
 import com.stevennt.movemate.ui.ViewModelFactory
@@ -37,6 +40,7 @@ import com.stevennt.movemate.ui.home.HomeActivity
 import com.stevennt.movemate.ui.utils.CustomEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
@@ -53,13 +57,14 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private val viewModel: AuthViewModel by viewModels {
         ViewModelFactory.getInstance(this)
     }
+    private lateinit var userPreferences: UserPreferences
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -113,59 +118,105 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(view: View) {
-        when(view.id){
-            R.id.login_button -> {
-                val email = binding.etEmaillogin.text?.toString()
-                val password = binding.etPasswordlogin.text?.toString()
+        when (view.id) {
+            R.id.login_button -> loginWithEmail()
+            R.id.login_with_google_button -> signInWithGoogle()
+        }
+    }
 
-                if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
-                    Toast.makeText(this@LoginActivity, R.string.error_empty_fields, Toast.LENGTH_SHORT).show()
-                    return
+    private fun loginWithEmail() {
+        val email = binding.etEmaillogin.text?.toString()
+        val password = binding.etPasswordlogin.text?.toString()
+
+        if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
+            Toast.makeText(this@LoginActivity, R.string.error_empty_fields, Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        viewModel.login(email, password).observe(this@LoginActivity) { result ->
+            handleLoginResult(result)
+        }
+    }
+
+    private fun handleLoginResult(result: Resource<LoginResp>?) {
+        when (result) {
+            is Resource.Loading -> showLoading(true)
+            is Resource.Success -> {
+                showLoading(false)
+                handleLoginSuccess(result.data?.token)
+            }
+            is Resource.Error -> {
+                showLoading(false)
+                Toast.makeText(this@LoginActivity, result.message, Toast.LENGTH_SHORT).show()
+            }
+            else -> {}
+        }
+    }
+
+    private fun handleLoginSuccess(token: String?) {
+        if (!token.isNullOrEmpty()) {
+            Log.d(TAG, "Saved Token: $token")
+            fetchUserData(token)
+        } else {
+            // Token is not available yet, handle the case accordingly
+        }
+    }
+
+    private fun fetchUserData(token: String) {
+        val userPreferences = UserPreferences.getInstance(dataStore)
+        val userSessionFlow = userPreferences.getUserSession()
+        val userDataFlow = userPreferences.getUserData()
+
+        lifecycleScope.launch {
+            userSessionFlow.collect { userSession ->
+                val sessionToken = userSession.token
+                if (!sessionToken.isNullOrEmpty()) {
+                    viewModel.getUserData(sessionToken).observe(this@LoginActivity) { result ->
+                        handleUserDataResult(result, userDataFlow)
+                    }
                 }
+            }
+        }
+    }
 
-                viewModel.login(email, password).observe(this@LoginActivity) { result ->
-                    if(result != null) {
-                        when (result) {
-                            is Resource.Loading -> {
-                                showLoading(true)
-                            }
-                            is Resource.Success -> {
-                                showLoading(false)
-
-                                val userPreferences = UserPreferences.getInstance(dataStore)
-                                val userSessionFlow = userPreferences.getUserSession()
-
-                                lifecycleScope.launch {
-                                    userSessionFlow.collect { userSession ->
-                                        val token = userSession.token
-                                        if (token != null) {
-                                            if (token.isNotEmpty()) {
-                                                Log.d(TAG, "Saved Token: $token")
-                                                Intent(this@LoginActivity, HomeActivity::class.java).apply {
-                                                    startActivity(this)
-                                                    finish()
-                                                }
-                                            } else {
-                                                // Token is not available yet, handle the case accordingly
-                                            }
-                                        }
-                                    }
-                                }
-
-                            }
-                            is Resource.Error -> {
-                                Log.d(TAG, "Login Error: ${result.data?.token}")
-                                showLoading(false)
-                                Toast.makeText(this@LoginActivity, result.message, Toast.LENGTH_SHORT).show()
-                            }
+    private fun handleUserDataResult(result: Resource<GetUserResp>, userDataFlow: Flow<UserData>) {
+        when (result) {
+            is Resource.Loading -> showLoading(true)
+            is Resource.Success -> {
+                showLoading(false)
+                lifecycleScope.launch {
+                    userDataFlow.collect { userData ->
+                        val userId = userData.userId
+                        if (!userId.isNullOrEmpty()) {
+                            Log.d(TAG, "Saved userId: $userId")
+                            navigateToHomeActivity()
+                        } else {
                         }
                     }
                 }
             }
-            R.id.login_with_google_button -> {
-                signIn()
+            is Resource.Error -> {
+                showLoading(false)
+                navigateToGenderActivity()
+                //Toast.makeText(this@LoginActivity, result.message, Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun navigateToHomeActivity() {
+        val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun navigateToGenderActivity() {
+        val intent = Intent(this@LoginActivity, GenderActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun signInWithGoogle() {
+        signIn()
     }
 
 
@@ -222,14 +273,40 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                                         // Handle Firebase login loading state
                                     }
                                     is Resource.Success -> {
-                                        // Firebase login successful
-                                        if (isTokenLoggedIn(user.uid)) {
-                                            startHomeActivity()
-                                            finish()
-                                        } else {
-                                            //userPreferences.saveTokenLoginStatus(user.uid, false)
-                                            startGenderActivity("")
-                                            finish()
+
+                                        val userPreferences = UserPreferences.getInstance(dataStore)
+                                        val userDataFlow = userPreferences.getUserData()
+
+                                        viewModel.getUserData(firebaseToken).observe(this@LoginActivity){ result ->
+                                            when(result){
+                                                is Resource.Loading -> {
+                                                    showLoading(true)
+                                                }
+
+                                                is Resource.Success -> {
+                                                    lifecycleScope.launch{
+                                                        userDataFlow.collect{ userData ->
+                                                            val userId = userData.userId
+                                                            if (userId != null) {
+                                                                if(userId.isNotEmpty()){
+                                                                    Log.d(TAG, "Saved userId: $userId")
+                                                                    Intent(this@LoginActivity, HomeActivity::class.java).apply {
+                                                                        startActivity(this)
+                                                                        finish()
+                                                                    }
+                                                                } else {
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                is Resource.Error -> {
+                                                    showLoading(false)
+                                                    navigateToGenderActivity()
+                                                    //Toast.makeText(this@LoginActivity, result.message, Toast.LENGTH_SHORT).show()
+                                                }
+                                                else -> {}
+                                            }
                                         }
                                     }
                                     is Resource.Error -> {
@@ -250,59 +327,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             }
     }
 
-    /*private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    if (user != null && isTokenLoggedIn(idToken)) {
-                        lifecycleScope.launch {
-                            val userPreferences = UserPreferences.getInstance(dataStore)
-                            val userSession = UserSession(idToken) // Use idToken as the user session token
-                            userPreferences.saveUserSession(userSession)
 
-                            viewModel.loginWithFirebase(idToken).observe(this@LoginActivity) { firebaseResult ->
-                                when (firebaseResult) {
-                                    is Resource.Loading -> {
-                                        // Handle Firebase login loading state
-                                    }
-                                    is Resource.Success -> {
-                                        // Firebase login successful
-                                        startHomeActivity()
-                                        finish()
-                                    }
-                                    is Resource.Error -> {
-                                        // Firebase login error
-                                        Toast.makeText(this@LoginActivity, "Firebase login error", Toast.LENGTH_SHORT).show()
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        val user = auth.currentUser
-                        if (user != null) {
-                            val userPreferences = UserPreferences.getInstance(dataStore)
-                            lifecycleScope.launch {
-                                userPreferences.saveTokenLoginStatus(idToken, false)
-                            }
-                        }
-                        startGenderActivity(idToken)
-                        finish()
-                    }
-                } else {
-                    val user = auth.currentUser
-                    if (user != null) {
-                        val userPreferences = UserPreferences.getInstance(dataStore)
-                        lifecycleScope.launch {
-                            userPreferences.saveTokenLoginStatus(idToken, false)
-                        }
-                    }
-                    startGenderActivity(idToken)
-                    finish()
-                }
-            }
-    }*/
 
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null){
@@ -346,11 +371,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        /*val currentUser = auth.currentUser
-        if (currentUser != null) {
-            updateUI(currentUser)
-        }*/
+
         val currentUser = auth.currentUser
         updateUI(currentUser)
     }

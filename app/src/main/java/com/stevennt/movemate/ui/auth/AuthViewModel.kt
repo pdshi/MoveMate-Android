@@ -8,4 +8,5 @@ class AuthViewModel(private val repository: MoveMateRepo) : ViewModel()  {
     fun login(email: String, pass: String) = repository.login(email, pass)
     fun register(email: String, pass: String, key: String) = repository.register(email, pass)
     fun loginWithFirebase(authToken: String) = repository.loginWithFirebase(authToken)
+    fun getUserData(authToken: String) = repository.getUserData(authToken)
 }

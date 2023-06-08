@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.085"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/back_gender3" />
+        app:layout_constraintTop_toBottomOf="@+id/back_myplan" />
 
     <TextView
         android:id="@+id/tv_my_plan"
@@ -31,7 +31,7 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.86"
-        app:layout_constraintStart_toEndOf="@+id/back_gender3"
+        app:layout_constraintStart_toEndOf="@+id/back_myplan"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_my_plan" />
 
     <ImageView
-        android:id="@+id/back_gender3"
+        android:id="@+id/back_myplan"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="24dp"
@@ -60,6 +60,7 @@
         app:tint="@color/orange" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_myplan"
         android:layout_width="match_parent"
         android:layout_height="480dp"
         android:layout_marginLeft="28dp"

@@ -10,6 +10,7 @@ import android.view.WindowManager
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -74,6 +75,17 @@ class ProfileActivity : AppCompatActivity() {
         )
 
         coroutineScope = CoroutineScope(Dispatchers.Main)
+
+        val userPreferences = UserPreferences.getInstance(dataStore)
+        val userDataFlow = userPreferences.getUserData()
+
+        lifecycleScope.launch {
+            userDataFlow.collect { userData ->
+                if (!userData.userId.isNullOrEmpty()) {
+                    binding.tvNameProfile.text = userData.displayName
+                }
+            }
+        }
 
         binding.logoutBtn.setOnClickListener{
             signOut()
