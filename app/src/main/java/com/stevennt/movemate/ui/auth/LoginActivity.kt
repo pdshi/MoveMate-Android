@@ -57,8 +57,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private val viewModel: AuthViewModel by viewModels {
         ViewModelFactory.getInstance(this)
     }
-    private lateinit var userPreferences: UserPreferences
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -157,8 +155,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         if (!token.isNullOrEmpty()) {
             Log.d(TAG, "Saved Token: $token")
             fetchUserData(token)
-        } else {
-            // Token is not available yet, handle the case accordingly
         }
     }
 
@@ -190,7 +186,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         if (!userId.isNullOrEmpty()) {
                             Log.d(TAG, "Saved userId: $userId")
                             navigateToHomeActivity()
-                        } else {
                         }
                     }
                 }
@@ -198,7 +193,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             is Resource.Error -> {
                 showLoading(false)
                 navigateToGenderActivity()
-                //Toast.makeText(this@LoginActivity, result.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -384,17 +378,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             isLoggedIn = userSession.token!!.isNotEmpty() && userSession.token == token
         }
         return isLoggedIn
-    }
-
-    private fun startHomeActivity() {
-        val intent = Intent(this, NameActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun startGenderActivity(idToken: String) {
-        val intent = Intent(this, GenderActivity::class.java)
-        intent.putExtra("idToken", idToken)
-        startActivity(intent)
     }
 
     companion object {

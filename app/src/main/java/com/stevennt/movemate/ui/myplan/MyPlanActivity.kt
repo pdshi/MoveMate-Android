@@ -1,6 +1,7 @@
 package com.stevennt.movemate.ui.myplan
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
@@ -11,6 +12,7 @@ import com.stevennt.movemate.data.model.Workouts
 import com.stevennt.movemate.databinding.ActivityHomeBinding
 import com.stevennt.movemate.databinding.ActivityMyPlanBinding
 import com.stevennt.movemate.ui.home.ListWorkoutAdapter
+import org.tensorflow.lite.examples.poseestimation.CameraActivity
 
 @Suppress("DEPRECATION")
 class MyPlanActivity : AppCompatActivity() {
@@ -32,6 +34,11 @@ class MyPlanActivity : AppCompatActivity() {
 
         binding.backMyplan.setOnClickListener{
             onBackPressed()
+        }
+
+        binding.btnMyplan.setOnClickListener{
+            val intent = Intent(this@MyPlanActivity, CameraActivity::class.java)
+            startActivity(intent)
         }
 
         setupRecyclerView()

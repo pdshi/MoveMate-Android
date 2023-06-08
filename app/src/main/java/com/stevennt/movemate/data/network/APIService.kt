@@ -22,12 +22,65 @@ interface APIService {
 
     @POST("auth/firebase")
     suspend fun firebase(
-        @Header("authorization") authorization: String,
+        @Header("Authorization") authorization: String,
     ) : FirebaseResponse
 
+    @FormUrlEncoded
+    @POST("userdata/input")
+    suspend fun inputUserData(
+        @Header("Authorization") authorization: String,
+        @Field("display_name") displayName: String?,
+        @Field("photo_url") photoUrl: String?,
+        @Field("gender") gender: String?,
+        @Field("age") age: Int?,
+        @Field("height") height: String?,
+        @Field("weight") weight: String?,
+        @Field("goal") goal: String?,
+        @Field("goal_weight") goalWeight: String?,
+        @Field("frequency") frequency: Int?,
+        @Field("day_start") dayStart: String?,
+        @Field("wo_time") woTime: String?
+    ): GetUserResp
+
     @GET("userdata/get")
-    suspend fun userdata(
-        @Header("authorization") authorization: String,
+    suspend fun getUserData(
+        @Header("Authorization") authorization: String,
     ) : GetUserResp
+
+    @FormUrlEncoded
+    @POST("userhistory/input")
+    suspend fun inputUserHistory(
+        @Header("Authorization") authorization: String,
+        @Field("type") type: String,
+        @Field("time") time: String,
+        @Field("reps") reps: String
+    ): InputUserResp
+
+    @FormUrlEncoded
+    @GET("userhistory/get")
+    suspend fun getUserHistory(
+        @Header("Authorization") authorization: String,
+        @Field("date_from") dateFrom: String,
+        @Field("date_to") dateTo: String,
+    ) : GetUserHistoryResp
+
+    @FormUrlEncoded
+    @POST("userreps/input")
+    suspend fun inputUserReps(
+        @Header("Authorization") authorization: String,
+        @Field("type") type: String,
+        @Field("reps") reps: String,
+        @Field("sets") sets: String,
+        @Field("date") date: String,
+        @Field("start") start: String,
+        @Field("end") end: String,
+    ): InputUserResp
+
+    @FormUrlEncoded
+    @GET("userreps/get")
+    suspend fun getUserReps(
+        @Header("Authorization") authorization: String,
+        @Field("current_date") currentDate: String,
+    ): GetUserRepsResp
 
 }

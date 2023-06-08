@@ -1,8 +1,6 @@
 package com.stevennt.movemate.ui.profile
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
@@ -18,11 +16,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.stevennt.movemate.R
-import com.stevennt.movemate.databinding.ActivityDailyBinding
 import com.stevennt.movemate.databinding.ActivityProfileBinding
 import com.stevennt.movemate.preference.UserPreferences
 import com.stevennt.movemate.ui.auth.LoginActivity
-import com.stevennt.movemate.ui.daily.DailyActivity
+import com.stevennt.movemate.ui.schedule.ScheduleActivity
 import com.stevennt.movemate.ui.home.HomeActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,7 +52,7 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.ivDailyAtprofile.setOnClickListener{
-            val intent = Intent(this, DailyActivity::class.java)
+            val intent = Intent(this, ScheduleActivity::class.java)
             startActivity(intent)
         }
 

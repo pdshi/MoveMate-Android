@@ -14,6 +14,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/helvetica_neue_bold"
         android:hint="@string/start"
+        android:alpha="0"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -53,7 +54,7 @@
         android:id="@+id/tv_ins3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/helvetica_neue_bold"
         android:text="@string/focus_area"
         android:textColor="@color/orange"
@@ -105,8 +106,9 @@
 
     <ImageView
         android:id="@+id/iv_muscle_detail"
-        android:layout_width="280dp"
-        android:layout_height="200dp"
+        android:layout_width="380dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

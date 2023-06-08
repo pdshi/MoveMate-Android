@@ -21,7 +21,7 @@ class DetailActivity : AppCompatActivity() {
         // Hide the status bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         setContentView(binding.root)
 

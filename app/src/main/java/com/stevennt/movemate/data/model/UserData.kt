@@ -1,7 +1,7 @@
 package com.stevennt.movemate.data.model
 
 data class UserData(
-    val id: Int?,
+    val dataId: Int?,
     val userId: String?,
     val displayName: String?,
     val photoUrl: String?,

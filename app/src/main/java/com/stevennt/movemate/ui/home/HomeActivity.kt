@@ -6,22 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.lifecycleScope
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.stevennt.movemate.Injection
 import com.stevennt.movemate.R
 import com.stevennt.movemate.data.model.Workouts
-import com.stevennt.movemate.databinding.ActivityDetailBinding
 import com.stevennt.movemate.databinding.ActivityHomeBinding
-import com.stevennt.movemate.preference.UserPreferences
 import com.stevennt.movemate.ui.auth.LoginActivity
-import com.stevennt.movemate.ui.daily.DailyActivity
-import com.stevennt.movemate.ui.detail.DetailActivity
+import com.stevennt.movemate.ui.schedule.ScheduleActivity
 import com.stevennt.movemate.ui.myplan.MyPlanActivity
 import com.stevennt.movemate.ui.profile.ProfileActivity
 import kotlinx.coroutines.flow.first
@@ -48,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         binding.ivDailyAthome.setOnClickListener{
-            val intent = Intent(this, DailyActivity::class.java)
+            val intent = Intent(this, ScheduleActivity::class.java)
             startActivity(intent)
         }
 

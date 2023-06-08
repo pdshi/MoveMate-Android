@@ -8,41 +8,11 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.*
 import com.stevennt.movemate.data.model.UserSession
 import com.stevennt.movemate.data.model.UserData
+import com.stevennt.movemate.data.model.UserHistory
 
 class UserPreferences(private val dataStore: DataStore<Preferences>) {
 
-    companion object {
-        @Volatile
-        private var INSTANCE: UserPreferences? = null
 
-        fun getInstance(dataStore: DataStore<Preferences>): UserPreferences {
-            return INSTANCE ?: synchronized(this) {
-                val instance = UserPreferences(dataStore)
-                INSTANCE = instance
-                instance
-            }
-        }
-    }
-
-    private val token = stringPreferencesKey("token")
-    private val id = intPreferencesKey("id")
-    private val userId = stringPreferencesKey("userId")
-    private val displayName = stringPreferencesKey("display_name")
-    private val photoUrl = stringPreferencesKey("photo_url")
-    private val gender = stringPreferencesKey("gender")
-    private val age = intPreferencesKey("age")
-    private val height = stringPreferencesKey("height")
-    private val weight = stringPreferencesKey("weight")
-    private val bmi = doublePreferencesKey("bmi")
-    private val bmiStatus = stringPreferencesKey("bmi_status")
-    private val goal = stringPreferencesKey("goal")
-    private val goalWeight = stringPreferencesKey("goal_weight")
-    private val frequency = intPreferencesKey("frequency")
-    private val dayStart = stringPreferencesKey("day_start")
-    private val woTime = stringPreferencesKey("wo_time")
-    private val createdAt = stringPreferencesKey("createdAt")
-    private val updatedAt = stringPreferencesKey("updatedAt")
-    private val isLoggedIn = booleanPreferencesKey("is_logged_in")
 
     fun getUserSession(): Flow<UserSession> {
         return dataStore.data.map { preferences ->
@@ -90,7 +60,7 @@ class UserPreferences(private val dataStore: DataStore<Preferences>) {
 
     suspend fun saveUserData(userData: UserData){
         dataStore.edit { preferences ->
-            preferences[id] = userData.id ?: 0
+            preferences[id] = userData.dataId ?: 0
             preferences[userId] = userData.userId ?: ""
             preferences[displayName] = userData.displayName ?: ""
             preferences[photoUrl] = userData.photoUrl ?: ""
@@ -110,11 +80,64 @@ class UserPreferences(private val dataStore: DataStore<Preferences>) {
         }
     }
 
-    suspend fun saveTokenLoginStatus(token: String, isLoggedIn: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[this.token] = token
-            preferences[this.isLoggedIn] = isLoggedIn
+    fun getUserHistory(): Flow<UserHistory>{
+        return dataStore.data.map { preferences ->
+            UserHistory(
+                preferences[historyId]?.toString()?.toIntOrNull() ?: 0,
+                preferences[userId] ?: "",
+                preferences[type] ?: "",
+                preferences[time]?.toString()?.toIntOrNull() ?: 0,
+                preferences[calories]?.toString()?.toDoubleOrNull() ?: 0.0,
+                preferences[date] ?: "",
+            )
         }
     }
 
+    suspend fun saveUserHistory(userHistory: UserHistory){
+        dataStore.edit { preferences ->
+            preferences[historyId] = userHistory.historyId ?: 0
+            preferences[userId] = userHistory.userId ?: ""
+            preferences[type] = userHistory.type ?: ""
+            preferences[time] = userHistory.time ?: 0
+            preferences[calories] = userHistory.calories ?: 0.0
+            preferences[date] = userHistory.date ?: ""
+        }
+    }
+
+    companion object {
+        @Volatile
+        private var INSTANCE: UserPreferences? = null
+
+        fun getInstance(dataStore: DataStore<Preferences>): UserPreferences {
+            return INSTANCE ?: synchronized(this) {
+                val instance = UserPreferences(dataStore)
+                INSTANCE = instance
+                instance
+            }
+        }
+
+        private val token = stringPreferencesKey("token")
+        private val id = intPreferencesKey("id")
+        private val userId = stringPreferencesKey("userId")
+        private val displayName = stringPreferencesKey("display_name")
+        private val photoUrl = stringPreferencesKey("photo_url")
+        private val gender = stringPreferencesKey("gender")
+        private val age = intPreferencesKey("age")
+        private val height = stringPreferencesKey("height")
+        private val weight = stringPreferencesKey("weight")
+        private val bmi = doublePreferencesKey("bmi")
+        private val bmiStatus = stringPreferencesKey("bmi_status")
+        private val goal = stringPreferencesKey("goal")
+        private val goalWeight = stringPreferencesKey("goal_weight")
+        private val frequency = intPreferencesKey("frequency")
+        private val dayStart = stringPreferencesKey("day_start")
+        private val woTime = stringPreferencesKey("wo_time")
+        private val createdAt = stringPreferencesKey("createdAt")
+        private val updatedAt = stringPreferencesKey("updatedAt")
+        private val type = stringPreferencesKey("type")
+        private val time = intPreferencesKey("time")
+        private val calories = doublePreferencesKey("calories")
+        private val date = stringPreferencesKey("date")
+        private val historyId = intPreferencesKey("id")
+    }
 }

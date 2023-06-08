@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.stevennt.movemate.data.network.APIService
 import com.stevennt.movemate.data.model.UserData
+import com.stevennt.movemate.data.model.UserHistory
 import com.stevennt.movemate.data.model.UserSession
 import com.stevennt.movemate.data.network.response.*
 import com.stevennt.movemate.preference.UserPreferences
@@ -73,7 +74,7 @@ class MoveMateRepo(private val apiService: APIService, private val userPreferenc
         emit(Resource.Loading)
         try {
 
-            val response = apiService.userdata("Bearer $authToken")
+            val response = apiService.getUserData("Bearer $authToken")
             if(response.success == true) {
                 userPreferences.saveUserData(
                     UserData(
@@ -94,6 +95,34 @@ class MoveMateRepo(private val apiService: APIService, private val userPreferenc
                         response.data?.woTime,
                         response.data?.createdAt,
                         response.data?.updatedAt
+
+                    )
+                )
+                emit(Resource.Success(response))
+            }else {
+                emit(Resource.Error(response.message ?: "Unknown error"))
+            }
+
+        } catch (e: Exception) {
+            Log.d("get_user_data", e.message.toString())
+            emit(Resource.Error(e.message.toString()))
+        }
+    }
+
+    fun getUserHistory(authToken: String, dateFrom: String, dateTo: String): LiveData<Resource<GetUserHistoryResp>> = liveData{
+        emit(Resource.Loading)
+        try {
+
+            val response = apiService.getUserHistory("Bearer $authToken", dateFrom, dateTo)
+            if(response.success == true) {
+                userPreferences.saveUserHistory(
+                    UserHistory(
+                        response.history?.id,
+                        response.history?.userId,
+                        response.history?.type,
+                        response.history?.time,
+                        response.history?.calories,
+                        response.history?.date,
 
                     )
                 )
