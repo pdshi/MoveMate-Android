@@ -10,7 +10,7 @@ data class GetUserRepsResp(
     val message: String? = null,
 
     @field:SerializedName("data")
-    val data: Reps? = null,
+    val reps: List<Reps>? = null,
 )
 
 data class Reps(

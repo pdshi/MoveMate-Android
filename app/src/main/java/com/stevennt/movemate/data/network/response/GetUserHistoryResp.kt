@@ -10,7 +10,7 @@ data class GetUserHistoryResp(
     val message: String? = null,
 
     @field:SerializedName("data")
-    val history: History? = null,
+    val history: List<History>? = null,
 )
 
 data class History(
@@ -24,7 +24,7 @@ data class History(
     val type: String? = null,
 
     @SerializedName("time")
-    val time: Int? = null,
+    val time: Double? = null,
 
     @SerializedName("calories")
     val calories: Double? = null,

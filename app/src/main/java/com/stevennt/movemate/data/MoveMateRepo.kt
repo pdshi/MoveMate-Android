@@ -6,6 +6,7 @@ import androidx.lifecycle.liveData
 import com.stevennt.movemate.data.network.APIService
 import com.stevennt.movemate.data.model.UserData
 import com.stevennt.movemate.data.model.UserHistory
+import com.stevennt.movemate.data.model.UserReps
 import com.stevennt.movemate.data.model.UserSession
 import com.stevennt.movemate.data.network.response.*
 import com.stevennt.movemate.preference.UserPreferences
@@ -109,33 +110,68 @@ class MoveMateRepo(private val apiService: APIService, private val userPreferenc
         }
     }
 
-    fun getUserHistory(authToken: String, dateFrom: String, dateTo: String): LiveData<Resource<GetUserHistoryResp>> = liveData{
+    fun getUserHistory(authToken: String, dateFrom: String, dateTo: String): LiveData<Resource<GetUserHistoryResp>> = liveData {
         emit(Resource.Loading)
         try {
-
             val response = apiService.getUserHistory("Bearer $authToken", dateFrom, dateTo)
-            if(response.success == true) {
-                userPreferences.saveUserHistory(
-                    UserHistory(
-                        response.history?.id,
-                        response.history?.userId,
-                        response.history?.type,
-                        response.history?.time,
-                        response.history?.calories,
-                        response.history?.date,
-
+            if (response.success == true) {
+                response.history?.forEach { historyEntry ->
+                    userPreferences.saveUserHistory(
+                        UserHistory(
+                            historyEntry.id,
+                            historyEntry.userId,
+                            historyEntry.type,
+                            historyEntry.time,
+                            historyEntry.calories,
+                            historyEntry.date
+                        )
                     )
-                )
+                }
                 emit(Resource.Success(response))
-            }else {
+            } else {
                 emit(Resource.Error(response.message ?: "Unknown error"))
             }
-
         } catch (e: Exception) {
             Log.d("get_user_data", e.message.toString())
             emit(Resource.Error(e.message.toString()))
         }
-
     }
 
+
+
+    fun getUserReps(authToken: String, currentDate: String): LiveData<Resource<GetUserRepsResp>> = liveData{
+        emit(Resource.Loading)
+        try {
+
+            val response = apiService.getUserReps("Bearer $authToken", currentDate)
+            if (response.success == true) {
+                val repsList = response.reps
+                if (repsList != null && repsList.isNotEmpty()) {
+                    for (reps in repsList) {
+                        userPreferences.saveUserReps(
+                            UserReps(
+                                reps.id,
+                                reps.userId,
+                                reps.type,
+                                reps.reps,
+                                reps.sets,
+                                reps.date,
+                                reps.start,
+                                reps.end,
+                                reps.createdAt,
+                                reps.updatedAt,
+                            )
+                        )
+                    }
+                }
+                emit(Resource.Success(response))
+            } else {
+                emit(Resource.Error(response.message ?: "Unknown error"))
+            }
+
+        } catch (e: Exception) {
+            Log.d("get_user_reps", e.message.toString())
+            emit(Resource.Error(e.message.toString()))
+        }
+    }
 }

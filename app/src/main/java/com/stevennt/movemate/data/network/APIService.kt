@@ -57,7 +57,7 @@ interface APIService {
     ): InputUserResp
 
     @FormUrlEncoded
-    @GET("userhistory/get")
+    @POST("userhistory/get")
     suspend fun getUserHistory(
         @Header("Authorization") authorization: String,
         @Field("date_from") dateFrom: String,
@@ -77,10 +77,41 @@ interface APIService {
     ): InputUserResp
 
     @FormUrlEncoded
-    @GET("userreps/get")
+    @POST("userreps/get")
     suspend fun getUserReps(
         @Header("Authorization") authorization: String,
         @Field("current_date") currentDate: String,
     ): GetUserRepsResp
+
+    @FormUrlEncoded
+    @POST("workout/input")
+    suspend fun inputWorkout(
+        @Header("Authorization") authorization: String,
+        @Field("type") type: String,
+        @Field("ceil") ceil: Int,
+        @Field("floor") floor: Int,
+        @Field("duration") duration: Int,
+        @Field("calories_per_reps") caloriesPerReps: Double,
+        @Field("bicep") bicep: Boolean,
+        @Field("tricep") tricep: Boolean,
+        @Field("shoulder") shoulder: Boolean,
+        @Field("chest") chest: Boolean,
+        @Field("abs") abs: Boolean,
+        @Field("thigh") thigh: Boolean,
+        @Field("butt") butt: Boolean,
+        @Field("leg") leg: Boolean
+    )
+
+    @FormUrlEncoded
+    @POST("workout/get")
+    suspend fun getWorkout(
+        @Header("Authorization") authorization: String,
+        @Field("type") type: String,
+    ) : GetWorkoutResp
+
+    @GET("workout/getalltype")
+    suspend fun getAllType(
+        @Header("Authorization") authorization: String,
+    ) : GetTypeResp
 
 }

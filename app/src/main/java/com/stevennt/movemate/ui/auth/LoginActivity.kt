@@ -38,6 +38,7 @@ import com.stevennt.movemate.ui.bio.GenderActivity
 import com.stevennt.movemate.ui.bio.NameActivity
 import com.stevennt.movemate.ui.home.HomeActivity
 import com.stevennt.movemate.ui.utils.CustomEditText
+import com.stevennt.movemate.ui.welcome.WelcomeActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -185,7 +186,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         val userId = userData.userId
                         if (!userId.isNullOrEmpty()) {
                             Log.d(TAG, "Saved userId: $userId")
-                            navigateToHomeActivity()
+                            navigateToWelcomeActivity()
                         }
                     }
                 }
@@ -197,8 +198,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun navigateToHomeActivity() {
-        val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+    private fun navigateToWelcomeActivity() {
+        val intent = Intent(this@LoginActivity, WelcomeActivity::class.java)
         startActivity(intent)
         finish()
     }

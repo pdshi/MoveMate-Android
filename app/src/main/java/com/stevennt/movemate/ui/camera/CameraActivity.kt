@@ -20,6 +20,7 @@ import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.pm.PackageManager
+import android.media.Image
 import android.os.Bundle
 import android.os.Process
 import android.view.SurfaceView
@@ -65,6 +66,7 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var tvClassificationValue2: TextView
     private lateinit var swClassification: SwitchCompat
     private lateinit var vClassificationOption: View
+    private lateinit var btnBack: ImageView
     private var cameraSource: CameraSource? = null
     private var isClassifyPose = false
     private val requestPermissionLauncher =
@@ -134,11 +136,18 @@ class CameraActivity : AppCompatActivity() {
         tvClassificationValue2 = findViewById(R.id.tvClassificationValue2)
         swClassification = findViewById(R.id.swPoseClassification)
         vClassificationOption = findViewById(R.id.vClassificationOption)
+        btnBack = findViewById(R.id.back_camera)
+
         initSpinner()
+
         spnModel.setSelection(modelPos)
         swClassification.setOnCheckedChangeListener(setClassificationListener)
         if (!isCameraPermissionGranted()) {
             requestPermission()
+        }
+
+        btnBack.setOnClickListener{
+            onBackPressed()
         }
     }
 

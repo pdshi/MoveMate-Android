@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class Workouts(
     val name: String,
     val icon: Int,
+    val reps: String,
     val instruction: String,
     val focusArea: Int,
 ) : Parcelable

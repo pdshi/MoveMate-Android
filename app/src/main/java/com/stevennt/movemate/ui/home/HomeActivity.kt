@@ -1,6 +1,7 @@
 package com.stevennt.movemate.ui.home
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -41,6 +42,7 @@ class HomeActivity : AppCompatActivity() {
 
         binding.ivDailyAthome.setOnClickListener{
             val intent = Intent(this, ScheduleActivity::class.java)
+            setResult(Activity.RESULT_OK)
             startActivity(intent)
         }
 
@@ -62,6 +64,7 @@ class HomeActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         val dataName = resources.getStringArray(R.array.workout_name_detail)
         val dataIcon = resources.obtainTypedArray(R.array.workout_icon)
+        val dataReps = resources.getStringArray(R.array.workout_reps)
         val dataInstruction = resources.getStringArray(R.array.workout_instruction)
         val dataFocusArea = resources.obtainTypedArray(R.array.workout_focus_area)
 
@@ -69,6 +72,7 @@ class HomeActivity : AppCompatActivity() {
             val workout = Workouts(
                 dataName[i],
                 dataIcon.getResourceId(i, -1),
+                dataReps[i],
                 dataInstruction[i],
                 dataFocusArea.getResourceId(i, -1)
             )

@@ -4,21 +4,41 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.stevennt.movemate.R
+import com.stevennt.movemate.data.Resource
 import com.stevennt.movemate.data.model.Workouts
 import com.stevennt.movemate.databinding.ActivityHomeBinding
 import com.stevennt.movemate.databinding.ActivityMyPlanBinding
+import com.stevennt.movemate.preference.UserPreferences
+import com.stevennt.movemate.preference.UserPreferences.Companion.userRepsList
+import com.stevennt.movemate.ui.ViewModelFactory
 import com.stevennt.movemate.ui.home.ListWorkoutAdapter
+import com.stevennt.movemate.ui.schedule.ScheduleViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.tensorflow.lite.examples.poseestimation.CameraActivity
+import java.io.File
 
 @Suppress("DEPRECATION")
 class MyPlanActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMyPlanBinding
     private val list = ArrayList<Workouts>()
+    private lateinit var dataStore: DataStore<Preferences>
+    private val viewModel: MyPlanViewModel by viewModels {
+        ViewModelFactory.getInstance(this)
+    }
+    private var isDataFetched = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +52,12 @@ class MyPlanActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.hide()
 
+        dataStore = PreferenceDataStoreFactory.create(
+            produceFile = {
+                File(application.filesDir, "user_prefs.preferences_pb")
+            }
+        )
+
         binding.backMyplan.setOnClickListener{
             onBackPressed()
         }
@@ -41,7 +67,10 @@ class MyPlanActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        setupRecyclerView()
+        if (!isDataFetched) {
+            setupRecyclerView()
+            isDataFetched = true
+        }
     }
 
     @SuppressLint("Recycle")
@@ -51,23 +80,60 @@ class MyPlanActivity : AppCompatActivity() {
         val dataInstruction = resources.getStringArray(R.array.workout_instruction)
         val dataFocusArea = resources.obtainTypedArray(R.array.workout_focus_area)
 
-        val n = 2
+        val userPreferences = UserPreferences.getInstance(dataStore)
+        val userSessionFlow = userPreferences.getUserSession()
 
-        for (iteration in 0 until n) {
-            for (i in dataName.indices) {
-                val workout = Workouts(
-                    dataName[i],
-                    dataIcon.getResourceId(i, -1),
-                    dataInstruction[i],
-                    dataFocusArea.getResourceId(i, -1)
-                )
-                list.add(workout)
+        lifecycleScope.launch{
+            userSessionFlow.collect{ userSession ->
+                val sessionToken = userSession.token
+                if (!sessionToken.isNullOrEmpty() && !isDataFetched) {
+                    viewModel.getUserReps(sessionToken, "2023-06-09").observe(this@MyPlanActivity) { result ->
+                        when(result){
+                            is Resource.Loading -> {
+
+                            }
+
+                            is Resource.Success -> {
+
+                                val userRepsFlow = userPreferences.getUserReps()
+
+                                val listWorkoutAdapter = ListWorkoutAdapter(emptyList())
+                                binding.rvMyplan.adapter = listWorkoutAdapter
+                                binding.rvMyplan.layoutManager = LinearLayoutManager(this@MyPlanActivity)
+                                binding.rvMyplan.setHasFixedSize(true)
+
+                                val list = mutableListOf<Workouts>()
+                                lifecycleScope.launch{
+                                    userRepsFlow.collect{
+
+                                        val set = userRepsList[1].sets
+                                        val rep = userRepsList[1].reps
+
+                                        for (i in 0 until set!!) {
+                                            for (j in dataName.indices) {
+                                                val workout = Workouts(
+                                                    dataName[j],
+                                                    dataIcon.getResourceId(j, -1),
+                                                    rep.toString() + "x",
+                                                    dataInstruction[j],
+                                                    dataFocusArea.getResourceId(j, -1)
+                                                )
+                                                list.add(workout)
+                                            }
+                                        }
+                                        listWorkoutAdapter.updateList(list)
+                                    }
+                                }
+                            }
+
+                            is Resource.Error -> {
+                                Toast.makeText(this@MyPlanActivity, result.message, Toast.LENGTH_SHORT).show()
+                                Log.d(this@MyPlanActivity.toString(), "msg: ${result.message}")
+                            }
+                        }
+                    }
+                }
             }
         }
-
-        binding.rvMyplan.layoutManager = LinearLayoutManager(this)
-        val listWorkoutAdapter = ListWorkoutAdapter(list)
-        binding.rvMyplan.adapter = listWorkoutAdapter
-        binding.rvMyplan.setHasFixedSize(true)
     }
 }

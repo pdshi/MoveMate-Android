@@ -4,7 +4,7 @@ data class UserHistory(
     val historyId: Int?,
     val userId: String?,
     val type: String?,
-    val time: Int?,
+    val time: Double?,
     val calories: Double?,
     val date: String?,
 )

@@ -1,5 +1,8 @@
 package com.stevennt.movemate.ui.schedule
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,14 +10,25 @@ import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Spinner
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.stevennt.movemate.data.Resource
 import com.stevennt.movemate.databinding.ActivityScheduleBinding
+import com.stevennt.movemate.preference.UserPreferences
+import com.stevennt.movemate.preference.UserPreferences.Companion.userHistories
 import com.stevennt.movemate.ui.ViewModelFactory
 import com.stevennt.movemate.ui.home.HomeActivity
 import com.stevennt.movemate.ui.profile.ProfileActivity
+import kotlinx.coroutines.launch
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,9 +39,14 @@ class ScheduleActivity : AppCompatActivity() {
     private val viewModel: ScheduleViewModel by viewModels {
         ViewModelFactory.getInstance(this)
     }
+    private lateinit var dataStore: DataStore<Preferences>
+    private lateinit var activityLauncher: ActivityResultLauncher<Intent>
 
-    private var selectedStartDate: Long? = null
-    private var selectedEndDate: Long? = null
+
+    private var selectedStartDate: String? = null
+    private var selectedEndDate: String? = null
+    private var isDataFetched = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,52 +60,148 @@ class ScheduleActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.hide()
 
-        binding.ivHomeAtdaily.setOnClickListener{
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-        }
-        binding.ivProfileAtdaily.setOnClickListener{
-            val intent = Intent(this, ProfileActivity::class.java)
-            startActivity(intent)
+        dataStore = PreferenceDataStoreFactory.create(
+            produceFile = {
+                File(application.filesDir, "user_prefs.preferences_pb")
+            }
+        )
+
+        activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                isDataFetched = true
+            }
         }
 
-        binding.editTextStartDate.setOnClickListener{
+
+        binding.ivHomeAtdaily.setOnClickListener{
+            val intent = Intent(this, HomeActivity::class.java)
+            activityLauncher.launch(intent)
+        }
+
+        binding.ivProfileAtdaily.setOnClickListener{
+            val intent = Intent(this, ProfileActivity::class.java)
+            activityLauncher.launch(intent)
+        }
+
+        binding.tvStartdate.setOnClickListener {
             showDatePickerDialog(true)
         }
 
-        binding.editTextEndDate.setOnClickListener{
+        binding.tvEnddate.setOnClickListener {
             showDatePickerDialog(false)
+        }
+
+        binding.ivRefresh.setOnClickListener{
+            refreshActivity()
         }
     }
 
-    private fun showDatePickerDialog(isStartDate: Boolean) {
-        val builder = MaterialDatePicker.Builder.dateRangePicker()
+    private fun getData(){
 
-        val constraintsBuilder = CalendarConstraints.Builder()
-        constraintsBuilder.setValidator(DateValidatorPointForward.now())
+        val userPreferences = UserPreferences.getInstance(dataStore)
+        val userSessionFlow = userPreferences.getUserSession()
 
-        builder.setCalendarConstraints(constraintsBuilder.build())
+        lifecycleScope.launch{
+            userSessionFlow.collect { userSession ->
+                val sessionToken = userSession.token
+                if (!sessionToken.isNullOrEmpty() && !isDataFetched) {
+                    Log.d("selected date", selectedStartDate ?: "")
+                    Log.d("selected date end", selectedEndDate ?: "")
 
-        val picker = builder.build()
+                    viewModel.getUserHistory(sessionToken, selectedStartDate ?: "", selectedEndDate ?: "").observe(this@ScheduleActivity){ result ->
+                        when(result){
 
-        picker.addOnPositiveButtonClickListener { selection ->
-            val dateRange = selection as? Pair<*, *>?
-            if (dateRange != null) {
-                val startDate = dateRange.first as? Long
-                val endDate = dateRange.second as? Long
+                            is Resource.Loading -> {
 
-                Log.d("DatePicker", "Selected start date: $startDate")
-                Log.d("DatePicker", "Selected end date: $endDate")
+                            }
 
-                if (isStartDate) {
-                    selectedStartDate = startDate
-                    binding.editTextStartDate.setText(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(startDate!!)))
-                } else {
-                    selectedEndDate = endDate
-                    binding.editTextEndDate.setText(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(endDate!!)))
+                            is Resource.Success -> {
+
+
+
+                                val userHistoryFlow = userPreferences.getUserHistory()
+
+                                lifecycleScope.launch{
+                                    userHistoryFlow.collect{
+
+                                        var totalCalories = 0.0
+                                        var totalTime = 0.0
+
+                                        for(data in userHistories){
+                                            if(data.historyId != null){
+                                                val calories = data.calories ?: 0.0
+                                                totalCalories += calories
+                                                val time = data.time ?: 0.0
+                                                totalTime += time
+                                                val timeToSec = totalTime.div(60)
+                                                val type = data.type
+
+                                                binding.tvCalories.text = totalCalories.toString()
+                                                binding.tvTime.text = timeToSec.toString()
+
+                                                if(type == "pushup"){
+                                                    binding.ivPushup.alpha += 0.2F
+                                                } else {
+                                                    binding.ivSitup.alpha += 0.2F
+                                                }
+                                            }
+                                        }
+
+                                        if (userHistories.isEmpty()) {
+                                            binding.tvCalories.text = "0"
+                                            binding.tvTime.text = "0"
+                                            binding.ivPushup.alpha = 0F
+                                            binding.ivSitup.alpha = 0F
+                                        }
+                                    }
+                                }
+                            }
+                            is Resource.Error -> {
+                                Log.d("Error", result.message ?: "")
+                            }
+                        }
+                    }
                 }
             }
         }
-        picker.show(supportFragmentManager, picker.toString())
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun showDatePickerDialog(isStartDate: Boolean) {
+
+        val c = Calendar.getInstance()
+
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
+            val formattedDate = formatDate(
+                Calendar.getInstance().apply {
+                    set(year, monthOfYear, dayOfMonth)
+                }.timeInMillis
+            )
+            if (isStartDate) {
+                selectedStartDate = formattedDate
+                binding.tvStartdate.text = formattedDate
+            } else {
+                selectedEndDate = formattedDate
+                binding.tvEnddate.text = formattedDate
+            }
+
+            if (selectedStartDate != null && selectedEndDate != null) {
+                getData()
+            }
+        }, year, month, day)
+
+        datePickerDialog.show()
+    }
+
+    private fun formatDate(date: Long): String {
+        return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(date))
+    }
+
+    fun refreshActivity() {
+        recreate()
     }
 }
