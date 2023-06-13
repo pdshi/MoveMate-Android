@@ -92,6 +92,7 @@ class ScheduleActivity : AppCompatActivity() {
         }
 
         binding.ivRefresh.setOnClickListener{
+            userHistories.clear()
             runOnUiThread {
                 recreate()
             }
@@ -140,12 +141,15 @@ class ScheduleActivity : AppCompatActivity() {
                                                 val timeToSec = totalTime.div(60)
                                                 val type = data.type
 
-                                                binding.tvCalories.text = totalCalories.toString()
-                                                binding.tvTime.text = timeToSec.toString()
+                                                val formattedCalories = String.format("%.2f", totalCalories)
+                                                val formattedTime = String.format("%.2f", timeToSec)
 
-                                                if(type == "pushup"){
+                                                binding.tvCalories.text = formattedCalories
+                                                binding.tvTime.text = formattedTime
+
+                                                if(type == "pushup" && totalCalories > 0){
                                                     binding.ivPushup.alpha += 0.2F
-                                                } else {
+                                                } else if(type == "situp" && totalCalories > 0) {
                                                     binding.ivSitup.alpha += 0.2F
                                                 }
                                             }
@@ -193,8 +197,9 @@ class ScheduleActivity : AppCompatActivity() {
                 binding.tvEnddate.text = formattedDate
             }
 
-            if (selectedStartDate != null && selectedEndDate != null) {
+            if (selectedStartDate != null && selectedEndDate != null && !isDataFetched) {
                 getData()
+                isDataFetched = true
             }
         }, year, month, day)
 

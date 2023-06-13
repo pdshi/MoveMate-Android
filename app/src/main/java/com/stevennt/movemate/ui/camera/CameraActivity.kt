@@ -43,8 +43,10 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.stevennt.movemate.R
+import com.stevennt.movemate.data.Resource
 import com.stevennt.movemate.ml.CameraSource
 import com.stevennt.movemate.preference.UserPreferences
+import com.stevennt.movemate.preference.UserPreferences.Companion.counter
 import com.stevennt.movemate.preference.UserPreferences.Companion.currentWorkoutIndex
 import com.stevennt.movemate.preference.UserPreferences.Companion.size
 import com.stevennt.movemate.preference.UserPreferences.Companion.userRepsList
@@ -84,8 +86,6 @@ class CameraActivity : AppCompatActivity() {
 
     /** Default device is CPU */
     private var device = Device.CPU
-
-    private var counter = 0
 
     private lateinit var tvScore: TextView
     private lateinit var tvFPS: TextView
@@ -197,19 +197,66 @@ class CameraActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        val userPreferences = UserPreferences.getInstance(dataStore)
+        val userSessionFlow = userPreferences.getUserSession()
+
         btnNext.setOnClickListener{
             if(currentWorkoutIndex == 0){
-                currentWorkoutIndex = 1
-                runOnUiThread {
-                    recreate()
+                lifecycleScope.launch {
+                    userSessionFlow.collect { userSession ->
+                        val sessionToken = userSession.token
+                        if (!sessionToken.isNullOrEmpty()) {
+                            viewModel.inputUserHistory(sessionToken, "pushup", 30,  counter)
+                                .observe(this@CameraActivity){ result ->
+                                    when(result){
+                                        is Resource.Loading -> {}
+
+                                        is Resource.Success -> {
+                                            counter = 0
+                                            currentWorkoutIndex = 1
+                                            runOnUiThread {
+                                                recreate()
+                                            }
+                                            size += 1
+                                        }
+
+                                        is Resource.Error -> {
+                                            Toast.makeText(this@CameraActivity, result.message, Toast.LENGTH_SHORT).show()
+                                            Log.d(this@CameraActivity.toString(), "msg: ${result.message}")
+                                        }
+                                    }
+                                }
+                        }
+                    }
                 }
-                size += 1
             } else {
-                currentWorkoutIndex = 0
-                runOnUiThread {
-                    recreate()
+                lifecycleScope.launch {
+                    userSessionFlow.collect { userSession ->
+                        val sessionToken = userSession.token
+                        if (!sessionToken.isNullOrEmpty()) {
+                            viewModel.inputUserHistory(sessionToken, "situp", 30,  counter)
+                                .observe(this@CameraActivity){ result ->
+                                    when(result){
+                                        is Resource.Loading -> {}
+
+                                        is Resource.Success -> {
+                                            counter = 0
+                                            currentWorkoutIndex = 0
+                                            runOnUiThread {
+                                                recreate()
+                                            }
+                                            size += 1
+                                        }
+
+                                        is Resource.Error -> {
+                                            Toast.makeText(this@CameraActivity, result.message, Toast.LENGTH_SHORT).show()
+                                            Log.d(this@CameraActivity.toString(), "msg: ${result.message}")
+                                        }
+                                    }
+                                }
+                        }
+                    }
                 }
-                size += 1
             }
 
             if(size == workoutList.size) {
@@ -299,10 +346,14 @@ class CameraActivity : AppCompatActivity() {
 
                                 /*val test = it[0].second
                                 val test2 = it[1].second
+                                val name = it[0].first
+                                val name2 = it[1].first
                                 Log.d("test", test.toString())
-                                Log.d("test2", test2.toString())*/
+                                Log.d("test2", test2.toString())
+                                Log.d("name", name)
+                                Log.d("name2", name2)*/
 
-                                if (it[0].second.toDouble() == 1.0) {
+                                if (it[0].first == "down" && it[0].second.toDouble() == 1.0) {
                                     counter++
                                     runOnUiThread{
                                         tvCounter.text = counter.toString()
@@ -310,9 +361,13 @@ class CameraActivity : AppCompatActivity() {
                                     Log.d("counter", counter.toString())
                                 }
 
-                                /*if (it[0].second.toDouble() == 1.0) {
-                                    if (it[1].second.toDouble() == 1.0) {
+                                /*if (it[0].first == "down" && it[0].second.toDouble() == 1.0) {
+                                    Log.d("name", it[0].first)
+                                    if (it[1].first == "up" && it[1].second.toDouble() == 1.0) {
                                         counter++
+                                        runOnUiThread{
+                                        tvCounter.text = counter.toString()
+                                        }
                                         Log.d("counter", counter.toString())
                                     }
                                 }*/
@@ -337,13 +392,13 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun isPoseClassifier() {
-        if(currentWorkoutIndex == 0){
+        if(currentWorkoutIndex == 1){
             //model for situp
 
             Log.d("index pose class 0", currentWorkoutIndex.toString())
             currentWorkoutIndex = 1
             tvWorkout.text = "Sit Up: "
-        } else if (currentWorkoutIndex == 1) {
+        } else if (currentWorkoutIndex == 0) {
             cameraSource?.setClassifier(if (isClassifyPose) PoseClassifier.create(this,
                 "pose_classifier.tflite", "pose_labels.txt") else null)
 

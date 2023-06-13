@@ -191,6 +191,7 @@ class UserPreferences(private val dataStore: DataStore<Preferences>) {
         val workoutList = mutableListOf<Workouts>()
         var currentWorkoutIndex: Int = 0
         var size: Int = 0
+        var counter: Int = 0
 
         private val token = stringPreferencesKey("token")
         private val id = intPreferencesKey("id")
