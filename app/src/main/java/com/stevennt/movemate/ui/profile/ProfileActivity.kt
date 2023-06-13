@@ -50,10 +50,12 @@ class ProfileActivity : AppCompatActivity() {
         binding.ivHomeAtprofile.setOnClickListener{
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
         binding.ivDailyAtprofile.setOnClickListener{
             val intent = Intent(this, ScheduleActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
         auth = Firebase.auth

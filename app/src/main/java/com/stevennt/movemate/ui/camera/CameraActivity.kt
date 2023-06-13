@@ -17,35 +17,62 @@ limitations under the License.
 package org.tensorflow.lite.examples.poseestimation
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.media.Image
 import android.os.Bundle
 import android.os.Process
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.SurfaceView
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.stevennt.movemate.R
 import com.stevennt.movemate.ml.CameraSource
+import com.stevennt.movemate.preference.UserPreferences
+import com.stevennt.movemate.preference.UserPreferences.Companion.currentWorkoutIndex
+import com.stevennt.movemate.preference.UserPreferences.Companion.size
+import com.stevennt.movemate.preference.UserPreferences.Companion.userRepsList
+import com.stevennt.movemate.ui.ViewModelFactory
+import com.stevennt.movemate.ui.camera.CameraViewModel
+import com.stevennt.movemate.ui.utils.CustomButton
+import com.stevennt.movemate.ui.utils.CustomEditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.examples.poseestimation.data.Device
 import org.tensorflow.lite.examples.poseestimation.ml.*
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
+import com.stevennt.movemate.preference.UserPreferences.Companion.workoutList
+import com.stevennt.movemate.ui.schedule.ScheduleActivity
 
 @Suppress("DEPRECATION")
 class CameraActivity : AppCompatActivity() {
     companion object {
         private const val FRAGMENT_DIALOG = "dialog"
     }
+
+    private lateinit var dataStore: DataStore<Preferences>
+    private val viewModel: CameraViewModel by viewModels {
+        ViewModelFactory.getInstance(this)
+    }
+    private var currentWorkout: String = ""
 
     /** A [SurfaceView] for camera preview.   */
     private lateinit var surfaceView: SurfaceView
@@ -58,6 +85,8 @@ class CameraActivity : AppCompatActivity() {
     /** Default device is CPU */
     private var device = Device.CPU
 
+    private var counter = 0
+
     private lateinit var tvScore: TextView
     private lateinit var tvFPS: TextView
     private lateinit var spnDevice: Spinner
@@ -67,6 +96,9 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var swClassification: SwitchCompat
     private lateinit var vClassificationOption: View
     private lateinit var btnBack: ImageView
+    private lateinit var btnNext: CustomButton
+    private lateinit var tvWorkout: TextView
+    private lateinit var tvCounter: TextView
     private var cameraSource: CameraSource? = null
     private var isClassifyPose = false
     private val requestPermissionLauncher =
@@ -119,8 +151,14 @@ class CameraActivity : AppCompatActivity() {
             isPoseClassifier()
         }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         setContentView(R.layout.activity_camera)
         supportActionBar?.hide()
@@ -137,10 +175,19 @@ class CameraActivity : AppCompatActivity() {
         swClassification = findViewById(R.id.swPoseClassification)
         vClassificationOption = findViewById(R.id.vClassificationOption)
         btnBack = findViewById(R.id.back_camera)
+        btnNext = findViewById(R.id.btn_camera_next)
+        tvWorkout = findViewById(R.id.tv_workout)
+        tvCounter = findViewById(R.id.tv_counter)
 
         initSpinner()
-
         spnModel.setSelection(modelPos)
+
+        dataStore = PreferenceDataStoreFactory.create(
+            produceFile = {
+                File(application.filesDir, "user_prefs.preferences_pb")
+            }
+        )
+
         swClassification.setOnCheckedChangeListener(setClassificationListener)
         if (!isCameraPermissionGranted()) {
             requestPermission()
@@ -149,6 +196,50 @@ class CameraActivity : AppCompatActivity() {
         btnBack.setOnClickListener{
             onBackPressed()
         }
+
+        btnNext.setOnClickListener{
+            if(currentWorkoutIndex == 0){
+                currentWorkoutIndex = 1
+                runOnUiThread {
+                    recreate()
+                }
+                size += 1
+            } else {
+                currentWorkoutIndex = 0
+                runOnUiThread {
+                    recreate()
+                }
+                size += 1
+            }
+
+            if(size == workoutList.size) {
+                size = 0
+                val intent = Intent(this@CameraActivity, ScheduleActivity::class.java)
+                startActivity(intent)
+                runOnUiThread {
+                    recreate()
+                }
+            }
+        }
+
+        Log.d("index", currentWorkoutIndex.toString())
+    }
+
+    private fun CustomEditText.listener() {
+        this.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                //btnNext.isEnabled =
+            }
+
+        })
     }
 
     override fun onStart() {
@@ -186,6 +277,11 @@ class CameraActivity : AppCompatActivity() {
                             tvFPS.text = getString(R.string.tfe_pe_tv_fps, fps)
                         }
 
+                        val userPreferences = UserPreferences.getInstance(dataStore)
+                        val userRepsFlow = userPreferences.getUserReps()
+
+
+
                         override fun onDetectedInfo(
                             personScore: Float?,
                             poseLabels: List<Pair<String, Float>>?
@@ -200,6 +296,26 @@ class CameraActivity : AppCompatActivity() {
                                     R.string.tfe_pe_tv_classification_value,
                                     convertPoseLabels(if (it.size >= 2) it[1] else null)
                                 )
+
+                                /*val test = it[0].second
+                                val test2 = it[1].second
+                                Log.d("test", test.toString())
+                                Log.d("test2", test2.toString())*/
+
+                                if (it[0].second.toDouble() == 1.0) {
+                                    counter++
+                                    runOnUiThread{
+                                        tvCounter.text = counter.toString()
+                                    }
+                                    Log.d("counter", counter.toString())
+                                }
+
+                                /*if (it[0].second.toDouble() == 1.0) {
+                                    if (it[1].second.toDouble() == 1.0) {
+                                        counter++
+                                        Log.d("counter", counter.toString())
+                                    }
+                                }*/
                             }
                         }
 
@@ -221,15 +337,30 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun isPoseClassifier() {
-        cameraSource?.setClassifier(if (isClassifyPose) PoseClassifier.create(this) else null)
+        if(currentWorkoutIndex == 0){
+            //model for situp
+
+            Log.d("index pose class 0", currentWorkoutIndex.toString())
+            currentWorkoutIndex = 1
+            tvWorkout.text = "Sit Up: "
+        } else if (currentWorkoutIndex == 1) {
+            cameraSource?.setClassifier(if (isClassifyPose) PoseClassifier.create(this,
+                "pose_classifier.tflite", "pose_labels.txt") else null)
+
+            currentWorkoutIndex = 0
+            Log.d("index pose class 1", currentWorkoutIndex.toString())
+            tvWorkout.text = "Push Up: "
+        }
+
     }
 
-    // Initialize spinners to let user select model/accelerator/tracker.
+    // Initialize spinners to let user select model/accelerator.
     private fun initSpinner() {
+
         ArrayAdapter.createFromResource(
             this,
             R.array.tfe_pe_models_array,
-            android.R.layout.simple_spinner_item
+            android.R.layout.simple_spinner_item,
         ).also { adapter ->
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -240,11 +371,12 @@ class CameraActivity : AppCompatActivity() {
 
         ArrayAdapter.createFromResource(
             this,
-            R.array.tfe_pe_device_name, android.R.layout.simple_spinner_item
-        ).also { adaper ->
-            adaper.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-            spnDevice.adapter = adaper
+            R.array.tfe_pe_device_name,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spnDevice.solidColor
+            spnDevice.adapter = adapter
             spnDevice.onItemSelectedListener = changeDeviceListener
         }
     }
@@ -289,8 +421,10 @@ class CameraActivity : AppCompatActivity() {
 
     // Show/hide the pose classification option.
     private fun showPoseClassifier(isVisible: Boolean) {
+        tvWorkout.text = " "
         vClassificationOption.visibility = if (isVisible) View.VISIBLE else View.GONE
         if (!isVisible) {
+            tvWorkout.text = " "
             swClassification.isChecked = false
         }
     }

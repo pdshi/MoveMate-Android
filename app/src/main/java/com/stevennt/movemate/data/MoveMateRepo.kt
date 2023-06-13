@@ -137,7 +137,17 @@ class MoveMateRepo(private val apiService: APIService, private val userPreferenc
         }
     }
 
+    fun inputUserHistory(authToken: String, type: String, time: Int, reps: Int): LiveData<Resource<InputUserResp>> = liveData {
+        emit(Resource.Loading)
+        try {
+            val response = apiService.inputUserHistory("Bearer $authToken", type, time, reps)
+            emit(Resource.Success(response))
 
+        } catch (e: Exception) {
+            Log.d("get_user_data", e.message.toString())
+            emit(Resource.Error(e.message.toString()))
+        }
+    }
 
     fun getUserReps(authToken: String, currentDate: String): LiveData<Resource<GetUserRepsResp>> = liveData{
         emit(Resource.Loading)
@@ -174,4 +184,6 @@ class MoveMateRepo(private val apiService: APIService, private val userPreferenc
             emit(Resource.Error(e.message.toString()))
         }
     }
+
+
 }

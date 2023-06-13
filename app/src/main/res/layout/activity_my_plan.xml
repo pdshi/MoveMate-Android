@@ -34,17 +34,6 @@
         app:layout_constraintStart_toEndOf="@+id/back_myplan"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_my_plan_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/helvetica_neue_bold"
-        android:text="20 mins"
-        android:textColor="@color/gray"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="@+id/tv_my_plan"
-        app:layout_constraintTop_toBottomOf="@+id/tv_my_plan" />
-
     <ImageView
         android:id="@+id/back_myplan"
         android:layout_width="30dp"

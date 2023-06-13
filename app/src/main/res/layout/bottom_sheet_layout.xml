@@ -55,6 +55,7 @@
             android:id="@+id/spnDevice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -72,7 +73,8 @@
         <Spinner
             android:id="@+id/spnModel"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
     <RelativeLayout
@@ -94,7 +96,10 @@
             android:id="@+id/swPoseClassification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            app:thumbTint="@color/orange"
+            app:trackTint="@color/gray"/>
+
     </RelativeLayout>
 
     <TextView

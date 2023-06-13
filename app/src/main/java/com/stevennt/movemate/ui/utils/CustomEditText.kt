@@ -28,7 +28,6 @@ class CustomEditText: androidx.appcompat.widget.AppCompatEditText {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         initView()
     }
-    var txtColor: Int = 0
     var isValid: Boolean = false
 
     var password: String = ""
@@ -43,7 +42,6 @@ class CustomEditText: androidx.appcompat.widget.AppCompatEditText {
     }
 
     private fun initView() {
-        txtColor = ContextCompat.getColor(context, R.color.offWhite)
         this.addTextChangedListener(object : TextWatcher {
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

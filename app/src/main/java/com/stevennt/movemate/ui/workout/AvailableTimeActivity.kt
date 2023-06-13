@@ -1,12 +1,12 @@
-package com.stevennt.movemate.ui.goal
+package com.stevennt.movemate.ui.workout
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.stevennt.movemate.R
 
-class GoalActivity : AppCompatActivity() {
+class AvailableTimeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_goal)
+        setContentView(R.layout.activity_available_time)
     }
 }

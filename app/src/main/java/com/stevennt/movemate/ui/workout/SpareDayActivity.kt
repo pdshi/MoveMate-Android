@@ -1,4 +1,4 @@
-package com.stevennt.movemate.ui.goal
+package com.stevennt.movemate.ui.workout
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

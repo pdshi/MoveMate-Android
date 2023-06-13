@@ -58,6 +58,13 @@
     <string name="tfe_pe_tv_fps">Fps: %d</string>
     <string name="tfe_pe_tv_score">Score: %.2f</string>
     <string name="tfe_pe_tv_classification_value">- %s</string>
+    <string name="start_workout">Start Workout</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="available_time">Available Time</string>
+    <string name="morning">Morning</string>
+    <string name="afternoon">Afternoon</string>
+    <string name="night">Night</string>
 
     <string-array name="date_ranges">
         <item>Select Start Date</item>
@@ -74,16 +81,17 @@
     </string-array>
 
     <string-array name="workout_name_detail">
-        <item>Sit Up\nExercise</item>
-        <item>Push Up\nExercise</item>
-       <!-- <item>Jumping\nJack</item>-->
+        <item>Sit Up</item>
+        <item>Push Up</item>
+        <!-- <item>Jumping\nJack</item>-->
     </string-array>
 
     <string-array name="workout_instruction">
         <item>To perform a sit-up, lie down on a mat with your back flat against the ground and your knees bent.\n\nPlace your hands behind your head or cross them over your chest. Engage your core muscles, exhale as you lift your upper body off the ground, and curl your spine to bring your chest towards your knees.\n\nInhale as you lower back down, keeping your neck relaxed. </item>
         <item>To do a push-up, start in a high plank position with your hands slightly wider than shoulder-width apart.\n\nLower your body by bending your elbows, keeping them close to your sides, until your chest nearly touches the ground.\n\nPush back up to the starting position by straightening your arms. Keep your body in a straight line throughout the movement, engaging your core and exhaling as you push up. </item>
         <!--<item>To do a jumping jack, start by standing upright with your feet together and your arms resting at your sides.\n\nIn one fluid motion, jump up and spread your legs wider than shoulder-width apart while simultaneously raising your arms out to the sides and above your head.\n\nYour body should resemble an "X" shape. Quickly jump back to the starting position by bringing your feet together and lowering your arms back down to your sides.</item>
-    --></string-array>
+    -->
+    </string-array>
 
     <string-array name="workout_icon">
         <item>@drawable/situp_icon</item>
@@ -94,7 +102,7 @@
     <string-array name="workout_focus_area">
         <item>@drawable/situp_muscle</item>
         <item>@drawable/pushup_muscle</item>
-       <!-- <item>@drawable/jjcak_muscle</item>-->
+        <!-- <item>@drawable/jjcak_muscle</item>-->
     </string-array>
 
     <string-array name="workout_reps">

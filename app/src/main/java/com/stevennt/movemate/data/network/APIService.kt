@@ -52,8 +52,8 @@ interface APIService {
     suspend fun inputUserHistory(
         @Header("Authorization") authorization: String,
         @Field("type") type: String,
-        @Field("time") time: String,
-        @Field("reps") reps: String
+        @Field("time") time: Int,
+        @Field("reps") reps: Int
     ): InputUserResp
 
     @FormUrlEncoded

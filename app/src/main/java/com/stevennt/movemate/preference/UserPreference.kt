@@ -8,10 +8,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.stevennt.movemate.data.model.UserSession
-import com.stevennt.movemate.data.model.UserData
-import com.stevennt.movemate.data.model.UserHistory
-import com.stevennt.movemate.data.model.UserReps
+import com.stevennt.movemate.data.model.*
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 
@@ -191,6 +188,9 @@ class UserPreferences(private val dataStore: DataStore<Preferences>) {
 
         val userHistories: MutableList<UserHistory> = mutableListOf()
         val userRepsList: MutableList<UserReps> = mutableListOf()
+        val workoutList = mutableListOf<Workouts>()
+        var currentWorkoutIndex: Int = 0
+        var size: Int = 0
 
         private val token = stringPreferencesKey("token")
         private val id = intPreferencesKey("id")

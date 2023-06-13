@@ -42,18 +42,21 @@ class HomeActivity : AppCompatActivity() {
 
         binding.ivDailyAthome.setOnClickListener{
             val intent = Intent(this, ScheduleActivity::class.java)
-            setResult(Activity.RESULT_OK)
+            //setResult(Activity.RESULT_OK)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         binding.ivProfileAthome.setOnClickListener{
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         binding.ivMyplan.setOnClickListener{
             val intent = Intent(this, MyPlanActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
         }
 
         setupRecyclerView()

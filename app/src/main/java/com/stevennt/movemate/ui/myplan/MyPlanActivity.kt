@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.datastore.core.DataStore
@@ -20,7 +21,9 @@ import com.stevennt.movemate.data.model.Workouts
 import com.stevennt.movemate.databinding.ActivityHomeBinding
 import com.stevennt.movemate.databinding.ActivityMyPlanBinding
 import com.stevennt.movemate.preference.UserPreferences
+import com.stevennt.movemate.preference.UserPreferences.Companion.currentWorkoutIndex
 import com.stevennt.movemate.preference.UserPreferences.Companion.userRepsList
+import com.stevennt.movemate.preference.UserPreferences.Companion.workoutList
 import com.stevennt.movemate.ui.ViewModelFactory
 import com.stevennt.movemate.ui.home.ListWorkoutAdapter
 import com.stevennt.movemate.ui.schedule.ScheduleViewModel
@@ -28,6 +31,9 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.examples.poseestimation.CameraActivity
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 @Suppress("DEPRECATION")
 class MyPlanActivity : AppCompatActivity() {
@@ -63,6 +69,7 @@ class MyPlanActivity : AppCompatActivity() {
         }
 
         binding.btnMyplan.setOnClickListener{
+            currentWorkoutIndex = 1
             val intent = Intent(this@MyPlanActivity, CameraActivity::class.java)
             startActivity(intent)
         }
@@ -83,17 +90,22 @@ class MyPlanActivity : AppCompatActivity() {
         val userPreferences = UserPreferences.getInstance(dataStore)
         val userSessionFlow = userPreferences.getUserSession()
 
+        val currentDate = getCurrentDate()
+
         lifecycleScope.launch{
             userSessionFlow.collect{ userSession ->
                 val sessionToken = userSession.token
                 if (!sessionToken.isNullOrEmpty() && !isDataFetched) {
-                    viewModel.getUserReps(sessionToken, "2023-06-09").observe(this@MyPlanActivity) { result ->
+                    userRepsList.clear()
+                    viewModel.getUserReps(sessionToken, currentDate).observe(this@MyPlanActivity) { result ->
                         when(result){
                             is Resource.Loading -> {
 
                             }
 
                             is Resource.Success -> {
+
+                                Log.d("Date", currentDate)
 
                                 val userRepsFlow = userPreferences.getUserReps()
 
@@ -102,26 +114,28 @@ class MyPlanActivity : AppCompatActivity() {
                                 binding.rvMyplan.layoutManager = LinearLayoutManager(this@MyPlanActivity)
                                 binding.rvMyplan.setHasFixedSize(true)
 
-                                val list = mutableListOf<Workouts>()
+
+
                                 lifecycleScope.launch{
                                     userRepsFlow.collect{
 
-                                        val set = userRepsList[1].sets
-                                        val rep = userRepsList[1].reps
+                                        val sets = userRepsList.firstOrNull { it.date == currentDate + "T00:00:00.000Z" }?.sets
+                                        val reps = userRepsList.firstOrNull { it.date == currentDate + "T00:00:00.000Z" }?.reps
 
-                                        for (i in 0 until set!!) {
+                                        for (i in 0 until sets!!) {
                                             for (j in dataName.indices) {
                                                 val workout = Workouts(
                                                     dataName[j],
                                                     dataIcon.getResourceId(j, -1),
-                                                    rep.toString() + "x",
+                                                    reps.toString() + "x",
                                                     dataInstruction[j],
                                                     dataFocusArea.getResourceId(j, -1)
                                                 )
-                                                list.add(workout)
+                                                workoutList.add(workout)
                                             }
                                         }
-                                        listWorkoutAdapter.updateList(list)
+                                        Log.d("workout", workoutList[3].name)
+                                        listWorkoutAdapter.updateList(workoutList)
                                     }
                                 }
                             }
@@ -135,5 +149,11 @@ class MyPlanActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun getCurrentDate(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val currentDate = Date()
+        return dateFormat.format(currentDate).toString()
     }
 }

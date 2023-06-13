@@ -21,20 +21,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="16dp"
             android:fontFamily="@font/helvetica_neue_bold"
-            android:text="Sit Up\nExercise"
+            android:text="Sit Up"
             android:textAlignment="viewEnd"
             android:textColor="@color/gray"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_workout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_workout" />
+            app:layout_constraintTop_toTopOf="@+id/iv_workout"
+            app:layout_constraintVertical_bias="0.117" />
 
         <TextView
             android:id="@+id/tv_reps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="-10dp"
             android:layout_marginEnd="17dp"
             android:fontFamily="@font/helvetica_neue_light"
             android:text="7x"

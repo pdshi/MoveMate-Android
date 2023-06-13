@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Spinner
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -17,9 +16,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointForward
-import com.google.android.material.datepicker.MaterialDatePicker
+import com.stevennt.movemate.R
 import com.stevennt.movemate.data.Resource
 import com.stevennt.movemate.databinding.ActivityScheduleBinding
 import com.stevennt.movemate.preference.UserPreferences
@@ -50,7 +47,7 @@ class ScheduleActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityScheduleBinding.inflate(layoutInflater)
+        binding = com.stevennt.movemate.databinding.ActivityScheduleBinding.inflate(layoutInflater)
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         window.setFlags(
@@ -76,11 +73,13 @@ class ScheduleActivity : AppCompatActivity() {
         binding.ivHomeAtdaily.setOnClickListener{
             val intent = Intent(this, HomeActivity::class.java)
             activityLauncher.launch(intent)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
         binding.ivProfileAtdaily.setOnClickListener{
             val intent = Intent(this, ProfileActivity::class.java)
             activityLauncher.launch(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         binding.tvStartdate.setOnClickListener {
@@ -88,11 +87,16 @@ class ScheduleActivity : AppCompatActivity() {
         }
 
         binding.tvEnddate.setOnClickListener {
+            userHistories.clear()
             showDatePickerDialog(false)
         }
 
         binding.ivRefresh.setOnClickListener{
-            refreshActivity()
+            runOnUiThread {
+                recreate()
+            }
+
+            //refreshActivity()
         }
     }
 
@@ -124,14 +128,14 @@ class ScheduleActivity : AppCompatActivity() {
                                 lifecycleScope.launch{
                                     userHistoryFlow.collect{
 
-                                        var totalCalories = 0.0
-                                        var totalTime = 0.0
+                                        var totalCalories = 0.00
+                                        var totalTime = 0.00
 
                                         for(data in userHistories){
                                             if(data.historyId != null){
-                                                val calories = data.calories ?: 0.0
+                                                val calories = data.calories ?: 0.00
                                                 totalCalories += calories
-                                                val time = data.time ?: 0.0
+                                                val time = data.time ?: 0.00
                                                 totalTime += time
                                                 val timeToSec = totalTime.div(60)
                                                 val type = data.type
@@ -201,7 +205,8 @@ class ScheduleActivity : AppCompatActivity() {
         return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(date))
     }
 
-    fun refreshActivity() {
+    private fun refreshActivity() {
         recreate()
     }
+
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.goal.SpareDayActivity"
+    tools:context=".ui.workout.SpareDayActivity"
     android:background="@color/orange">
 
     <com.stevennt.movemate.ui.utils.CustomButton

@@ -42,7 +42,7 @@
         app:layout_constraintStart_toStartOf="@+id/imageView15"
         app:layout_constraintTop_toTopOf="@+id/imageView15"
         app:layout_constraintVertical_bias="0.466"
-        app:srcCompat="@drawable/home_vector"
+        app:srcCompat="@drawable/home"
         android:contentDescription="@string/home_vector"
         android:clickable="true"
         android:focusable="true"/>
@@ -56,7 +56,7 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView15"
         app:layout_constraintTop_toTopOf="@+id/imageView15"
         app:layout_constraintVertical_bias="0.451"
-        app:srcCompat="@drawable/acc_vector" />
+        app:srcCompat="@drawable/profile" />
 
     <ImageView
         android:id="@+id/imageView14"
@@ -80,7 +80,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView16"
-        app:layout_constraintVertical_bias="0.106">
+        app:layout_constraintVertical_bias="0.182">
 
         <ImageView
             android:id="@+id/rect_orange"
@@ -223,7 +223,8 @@
         android:id="@+id/imageGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="6dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/parentContainer">
@@ -269,7 +270,8 @@
         android:inputType="date"
         android:fontFamily="@font/helvetica_neue_medium"
         android:textColorHint="@color/orange"
-        android:textSize="12sp"
+        android:textColor="@color/orange"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView16"
         tools:ignore="TextFields" />
@@ -286,7 +288,8 @@
         android:inputType="date"
         android:fontFamily="@font/helvetica_neue_medium"
         android:textColorHint="@color/orange"
-        android:textSize="12sp"
+        android:textSize="15sp"
+        android:textColor="@color/orange"
         app:layout_constraintStart_toEndOf="@+id/tv_dash"
         app:layout_constraintTop_toBottomOf="@+id/textView16"
         tools:ignore="TextFields" />
@@ -296,7 +299,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="6dp"
         android:clickable="true"
         android:focusable="true"
         android:hint="-"
@@ -310,11 +313,11 @@
         android:id="@+id/iv_refresh"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_marginStart="174dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_dash"
+        android:layout_marginStart="176dp"
+        app:layout_constraintBottom_toTopOf="@+id/parentContainer"
         app:layout_constraintStart_toEndOf="@+id/textView16"
         app:layout_constraintTop_toTopOf="@+id/textView16"
-        app:layout_constraintVertical_bias="0.444"
+        app:layout_constraintVertical_bias="0.798"
         app:srcCompat="@drawable/ic_refresh" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

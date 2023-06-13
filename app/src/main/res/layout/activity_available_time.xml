@@ -4,58 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.workout.GoalActivity"
+    tools:context=".ui.workout.AvailableTimeActivity"
     android:background="@color/orange">
 
     <com.stevennt.movemate.ui.utils.CustomButton
-        android:id="@+id/loseWeight_button"
-        android:layout_width="230dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="24dp"
+        android:id="@+id/btn_morning"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="100dp"
         android:backgroundTint="@color/gray"
         android:fontFamily="@font/helvetica_neue_bold"
-        android:hint="@string/lose_weight"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
-
-    <com.stevennt.movemate.ui.utils.CustomButton
-        android:id="@+id/healthy_button"
-        android:layout_width="230dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="24dp"
-        android:backgroundTint="@color/gray"
-        android:fontFamily="@font/helvetica_neue_bold"
-        android:hint="@string/healthy"
+        android:hint="@string/morning"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loseWeight_button" />
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <com.stevennt.movemate.ui.utils.CustomButton
-        android:id="@+id/gainMuscle_button"
-        android:layout_width="230dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="24dp"
+        android:id="@+id/btn_afternoon"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="30dp"
         android:backgroundTint="@color/gray"
         android:fontFamily="@font/helvetica_neue_bold"
-        android:hint="@string/gain_muscle"
+        android:hint="@string/afternoon"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/healthy_button" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_morning" />
+
+    <com.stevennt.movemate.ui.utils.CustomButton
+        android:id="@+id/btn_night"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/gray"
+        android:fontFamily="@font/helvetica_neue_bold"
+        android:hint="@string/night"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_afternoon" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="112dp"
         android:fontFamily="@font/helvetica_neue_bold"
-        android:text="@string/goal"
+        android:text="@string/available_time"
         android:textColor="@color/offWhite"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,26 +64,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/back_name3"
+        android:id="@+id/back_name6"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="58dp"
+        android:clickable="true"
         android:contentDescription="@string/arrow_back"
+        android:focusable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow_back"
-        app:tint="@color/offWhite"
-        android:clickable="true"
-        android:focusable="true"/>
-
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="321dp"
-        android:layout_height="311dp"
-        android:layout_marginTop="12dp"
-        android:src="@drawable/goal_page_people"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:tint="@color/offWhite" />
 </androidx.constraintlayout.widget.ConstraintLayout>

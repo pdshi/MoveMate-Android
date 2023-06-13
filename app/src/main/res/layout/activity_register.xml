@@ -34,51 +34,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.stevennt.movemate.ui.utils.CustomButton
-        android:id="@+id/signup_with_google_button"
-        android:layout_width="180dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="180dp"
-        android:layout_marginEnd="157dp"
-        android:backgroundTint="@color/gray"
-        android:fontFamily="@font/helvetica_neue_bold"
-        android:hint="@string/sign_up_with_google"
-        android:textAllCaps="false"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.523"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:fontFamily="@font/helvetica_neue_bold"
-        android:text="@string/or"
-        android:textColor="@color/orange"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signup_with_google_button" />
+
+    />
 
     <com.stevennt.movemate.ui.utils.CustomEditText
         android:id="@+id/et_emailregis"
         android:layout_width="300dp"
         android:layout_height="43dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="120dp"
         android:background="@drawable/border_edittext"
         android:ems="10"
         android:fontFamily="@font/helvetica_neue_bold"
         android:hint="@string/email_string"
+        android:textColor="@color/gray"
         android:inputType="textEmailAddress"
         android:textAlignment="viewStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <com.stevennt.movemate.ui.utils.CustomEditText
         android:id="@+id/et_passwordregis"
@@ -89,6 +64,7 @@
         android:ems="10"
         android:fontFamily="@font/helvetica_neue_bold"
         android:hint="@string/password_string"
+        android:textColor="@color/gray"
         android:inputType="textPassword"
         android:textAlignment="viewStart"
         app:layout_constraintEnd_toEndOf="parent"
@@ -106,6 +82,7 @@
         android:fontFamily="@font/helvetica_neue_bold"
         android:hint="@string/confirm_password"
         android:inputType="textPassword"
+        android:textColor="@color/gray"
         android:textAlignment="viewStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"

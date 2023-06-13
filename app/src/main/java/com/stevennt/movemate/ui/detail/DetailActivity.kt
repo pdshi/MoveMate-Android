@@ -7,7 +7,6 @@ import android.view.WindowManager
 import com.stevennt.movemate.R
 import com.stevennt.movemate.data.model.Workouts
 import com.stevennt.movemate.databinding.ActivityDetailBinding
-import com.stevennt.movemate.databinding.ActivityMainBinding
 
 @Suppress("DEPRECATION")
 class DetailActivity : AppCompatActivity() {

@@ -17,6 +17,20 @@
         android:theme="@style/Theme.MoveMate"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".ui.workout.AvailableTimeActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ui.workout.StartWorkoutActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name="org.tensorflow.lite.examples.poseestimation.CameraActivity"
             android:exported="false">
             <meta-data
@@ -72,14 +86,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.goal.SpareDayActivity"
+            android:name=".ui.workout.SpareDayActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.goal.GoalActivity"
+            android:name=".ui.workout.GoalActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -122,13 +136,6 @@
         </activity>
         <activity
             android:name=".ui.auth.LoginActivity"
-            android:exported="true">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".MainActivity"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
