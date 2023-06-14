@@ -224,5 +224,23 @@ class MoveMateRepo(private val apiService: APIService, private val userPreferenc
         }
     }
 
+    fun inputUserReps(
+        authToken: String,
+        type: String,
+        reps: String,
+        sets: String,
+        date: String,
+        start: String,
+        end: String
+    ): LiveData<Resource<InputUserResp>> = liveData {
+        emit(Resource.Loading)
+        try {
+            val response = apiService.inputUserReps("Bearer $authToken", type, reps, sets, date, start, end)
+            emit(Resource.Success(response))
 
+        } catch (e: Exception) {
+            Log.d("get_user_data", e.message.toString())
+            emit(Resource.Error(e.message.toString()))
+        }
+    }
 }

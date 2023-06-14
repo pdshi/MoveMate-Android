@@ -2,6 +2,7 @@ package com.stevennt.movemate.ui.bio
 
 import androidx.lifecycle.ViewModel
 import com.stevennt.movemate.data.MoveMateRepo
+import com.stevennt.movemate.data.model.*
 
 class BioViewModel(private val repository: MoveMateRepo) : ViewModel() {
     fun inputUserData(
@@ -31,4 +32,14 @@ class BioViewModel(private val repository: MoveMateRepo) : ViewModel() {
         dayStart,
         woTime,
     )
+
+    fun inputUserReps(
+        authToken: String,
+        type: String,
+        reps: String,
+        sets: String,
+        date: String,
+        start: String,
+        end: String
+    ) = repository.inputUserReps(authToken, type, reps, sets, date, start, end)
 }

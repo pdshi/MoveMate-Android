@@ -5,10 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
-import com.stevennt.movemate.R
 import com.stevennt.movemate.data.model.userDataArray
 import com.stevennt.movemate.databinding.ActivityGenderBinding
-import com.stevennt.movemate.preference.UserPreferences.Companion.InputUserData
+import com.stevennt.movemate.ui.home.HomeActivity
 
 @Suppress("DEPRECATION")
 class GenderActivity : AppCompatActivity() {
@@ -36,6 +35,11 @@ class GenderActivity : AppCompatActivity() {
         binding.ivFemale.setOnClickListener{
             userDataArray[0].gender = "female"
             val intent = Intent(this, NameActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.backGender.setOnClickListener{
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
     }

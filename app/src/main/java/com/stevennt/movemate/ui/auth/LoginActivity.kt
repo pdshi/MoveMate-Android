@@ -37,14 +37,12 @@ import com.stevennt.movemate.preference.UserPreferences.Companion.email
 import com.stevennt.movemate.preference.UserPreferences.Companion.password
 import com.stevennt.movemate.ui.ViewModelFactory
 import com.stevennt.movemate.ui.bio.GenderActivity
-import com.stevennt.movemate.ui.bio.NameActivity
 import com.stevennt.movemate.ui.home.HomeActivity
 import com.stevennt.movemate.ui.utils.CustomEditText
 import com.stevennt.movemate.ui.welcome.WelcomeActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -312,8 +310,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             }
     }
 
-
-
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null){
             startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
@@ -322,13 +318,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             startActivity(Intent(this@LoginActivity, GenderActivity::class.java))
             finish()
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
     }
 
     companion object {

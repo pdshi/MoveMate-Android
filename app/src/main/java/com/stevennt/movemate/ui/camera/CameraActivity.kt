@@ -344,15 +344,6 @@ class CameraActivity : AppCompatActivity() {
                                     convertPoseLabels(if (it.size >= 2) it[1] else null)
                                 )
 
-                                /*val test = it[0].second
-                                val test2 = it[1].second
-                                val name = it[0].first
-                                val name2 = it[1].first
-                                Log.d("test", test.toString())
-                                Log.d("test2", test2.toString())
-                                Log.d("name", name)
-                                Log.d("name2", name2)*/
-
                                 if (it[0].first == "down" && it[0].second.toDouble() == 1.0) {
                                     counter++
                                     runOnUiThread{
@@ -393,14 +384,15 @@ class CameraActivity : AppCompatActivity() {
 
     private fun isPoseClassifier() {
         if(currentWorkoutIndex == 1){
-            //model for situp
+            cameraSource?.setClassifier(if (isClassifyPose) PoseClassifier.create(this,
+                "pose_classifier_situp.tflite", "pose_labels.txt") else null)
 
-            Log.d("index pose class 0", currentWorkoutIndex.toString())
             currentWorkoutIndex = 1
+            Log.d("index pose class 0", currentWorkoutIndex.toString())
             tvWorkout.text = "Sit Up: "
         } else if (currentWorkoutIndex == 0) {
             cameraSource?.setClassifier(if (isClassifyPose) PoseClassifier.create(this,
-                "pose_classifier.tflite", "pose_labels.txt") else null)
+                "pose_classifier_pushup.tflite", "pose_labels.txt") else null)
 
             currentWorkoutIndex = 0
             Log.d("index pose class 1", currentWorkoutIndex.toString())

@@ -1,6 +1,7 @@
 package com.stevennt.movemate.ui.getplan
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
@@ -25,6 +27,7 @@ import com.stevennt.movemate.ui.welcome.WelcomeActivity
 import kotlinx.coroutines.launch
 import java.io.File
 import com.stevennt.movemate.ui.auth.LoginActivity
+import java.time.LocalDate
 
 @Suppress("DEPRECATION")
 class GetPlanActivity : AppCompatActivity() {
@@ -40,6 +43,7 @@ class GetPlanActivity : AppCompatActivity() {
 
     private var isDataFetched = false
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGetPlanBinding.inflate(layoutInflater)
@@ -60,17 +64,6 @@ class GetPlanActivity : AppCompatActivity() {
 
         val userPreferences = UserPreferences.getInstance(dataStore)
         val userSessionFlow = userPreferences.getUserSession()
-
-        Log.d("check", userDataArray[0].displayName)
-        Log.d("check", userDataArray[0].gender)
-        Log.d("check", userDataArray[0].age)
-        Log.d("check", userDataArray[0].height)
-        Log.d("check", userDataArray[0].weight)
-        Log.d("check", userDataArray[0].goal)
-        Log.d("check", userDataArray[0].goalWeight)
-        Log.d("check", userDataArray[0].frequency)
-        Log.d("check", userDataArray[0].dayStart)
-        Log.d("check", userDataArray[0].woTime)
 
         lifecycleScope.launch{
             userSessionFlow.collect { userSession ->
@@ -100,6 +93,60 @@ class GetPlanActivity : AppCompatActivity() {
                                         is Resource.Loading -> {}
                                         is Resource.Success -> {
                                             isDataFetched = true
+
+                                            val today = LocalDate.now()
+                                            val incrementInterval = 5
+                                            val totalDays = 14
+                                            var sets = 2
+                                            var end = "16.00"
+
+                                            for(day in 0 until totalDays){
+                                                if (day % incrementInterval == 0 && day != 0) {
+                                                    sets++
+                                                    val currentEnd = end.toFloat()
+                                                    end = (currentEnd + 0.03).toString()
+                                                }
+
+                                                val currentDate = today.plusDays(day.toLong())
+                                                val formattedDate = currentDate.toString()
+
+                                                viewModel.inputUserReps(
+                                                    sessionToken,
+                                                    "pushup",
+                                                    "12",
+                                                    sets.toString(),
+                                                    formattedDate,
+                                                    "16.00",
+                                                    end
+                                                ).observe(this@GetPlanActivity){ result ->
+                                                    when(result){
+                                                        is Resource.Loading -> {}
+
+                                                        is Resource.Success -> {
+                                                            viewModel.inputUserReps(
+                                                                sessionToken,
+                                                                "situp",
+                                                                "12",
+                                                                sets.toString(),
+                                                                formattedDate,
+                                                                "16.00",
+                                                                end
+                                                            ).observe(this@GetPlanActivity){result ->
+                                                                when(result) {
+                                                                    is Resource.Loading -> {}
+
+                                                                    is Resource.Success -> {}
+
+                                                                    is Resource.Error -> {}
+                                                                }
+                                                            }
+                                                        }
+
+                                                        is Resource.Error -> {}
+                                                    }
+                                                }
+                                            }
+
                                             val intent = Intent(this@GetPlanActivity, WelcomeActivity::class.java)
                                             startActivity(intent)
                                         }

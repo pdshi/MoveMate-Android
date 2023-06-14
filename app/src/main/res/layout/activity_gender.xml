@@ -8,6 +8,20 @@
     android:background="@color/orange">
 
     <ImageView
+        android:id="@+id/back_gender"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="58dp"
+        android:clickable="true"
+        android:contentDescription="@string/arrow_back"
+        android:focusable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_back"
+        app:tint="@color/offWhite" />
+
+    <ImageView
         android:id="@+id/iv_male"
         android:layout_width="212dp"
         android:layout_height="465dp"

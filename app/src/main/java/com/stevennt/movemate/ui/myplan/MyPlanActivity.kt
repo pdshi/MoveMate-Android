@@ -65,6 +65,7 @@ class MyPlanActivity : AppCompatActivity() {
         )
 
         binding.backMyplan.setOnClickListener{
+            workoutList.clear()
             onBackPressed()
         }
 
