@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.workout.StartWorkoutActivity"
+    tools:context=".ui.bio.StartWorkoutActivity"
     android:background="@color/orange">
 
     <com.stevennt.movemate.ui.utils.CustomButton
@@ -50,7 +50,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/back_name5"
+        android:id="@+id/back_start_workout"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="24dp"

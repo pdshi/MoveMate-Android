@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.workout.AvailableTimeActivity"
+    tools:context=".ui.bio.AvailableTimeActivity"
     android:background="@color/orange">
 
     <com.stevennt.movemate.ui.utils.CustomButton
@@ -64,7 +64,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/back_name6"
+        android:id="@+id/back_available_time"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="24dp"

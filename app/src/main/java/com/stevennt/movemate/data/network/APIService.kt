@@ -32,15 +32,15 @@ interface APIService {
         @Field("display_name") displayName: String?,
         @Field("photo_url") photoUrl: String?,
         @Field("gender") gender: String?,
-        @Field("age") age: Int?,
+        @Field("age") age: String?,
         @Field("height") height: String?,
         @Field("weight") weight: String?,
         @Field("goal") goal: String?,
         @Field("goal_weight") goalWeight: String?,
-        @Field("frequency") frequency: Int?,
+        @Field("frequency") frequency: String?,
         @Field("day_start") dayStart: String?,
-        @Field("wo_time") woTime: String?
-    ): GetUserResp
+        @Field("wo_time") woTime: String?,
+    ): InputUserDataResp
 
     @GET("userdata/get")
     suspend fun getUserData(

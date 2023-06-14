@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.stevennt.movemate.Injection
 import com.stevennt.movemate.data.MoveMateRepo
 import com.stevennt.movemate.ui.auth.AuthViewModel
+import com.stevennt.movemate.ui.bio.BioViewModel
 import com.stevennt.movemate.ui.camera.CameraViewModel
 import com.stevennt.movemate.ui.myplan.MyPlanViewModel
 import com.stevennt.movemate.ui.schedule.ScheduleViewModel
@@ -26,6 +27,9 @@ class ViewModelFactory private constructor(private val repository: MoveMateRepo)
             }
             modelClass.isAssignableFrom(CameraViewModel::class.java) -> {
                 CameraViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(BioViewModel::class.java) -> {
+                BioViewModel(repository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

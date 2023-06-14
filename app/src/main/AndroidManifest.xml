@@ -17,14 +17,14 @@
         android:theme="@style/Theme.MoveMate"
         tools:targetApi="tiramisu">
         <activity
-            android:name=".ui.workout.AvailableTimeActivity"
+            android:name=".ui.bio.AvailableTimeActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.workout.StartWorkoutActivity"
+            android:name=".ui.bio.StartWorkoutActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -86,14 +86,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.workout.SpareDayActivity"
+            android:name=".ui.bio.SpareDayActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.workout.GoalActivity"
+            android:name=".ui.bio.GoalActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

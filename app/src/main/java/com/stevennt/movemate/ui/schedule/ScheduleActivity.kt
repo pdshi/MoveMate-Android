@@ -47,7 +47,7 @@ class ScheduleActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = com.stevennt.movemate.databinding.ActivityScheduleBinding.inflate(layoutInflater)
+        binding = ActivityScheduleBinding.inflate(layoutInflater)
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         window.setFlags(

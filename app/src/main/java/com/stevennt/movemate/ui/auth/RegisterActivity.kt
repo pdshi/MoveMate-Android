@@ -93,7 +93,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                                 }
                                 is Resource.Error -> {
                                     showLoading(false)
-                                    Toast.makeText(this@RegisterActivity, result.message, Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@RegisterActivity, "User Already Exists!", Toast.LENGTH_SHORT).show()
                                 }
                             }
                         }

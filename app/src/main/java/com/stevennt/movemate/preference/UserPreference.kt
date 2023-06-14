@@ -189,9 +189,14 @@ class UserPreferences(private val dataStore: DataStore<Preferences>) {
         val userHistories: MutableList<UserHistory> = mutableListOf()
         val userRepsList: MutableList<UserReps> = mutableListOf()
         val workoutList = mutableListOf<Workouts>()
+        //var InputUserData = mutableListOf<ListInputData>()
         var currentWorkoutIndex: Int = 0
         var size: Int = 0
         var counter: Int = 0
+        var email: String? = ""
+        var password: String? = ""
+
+        val InputUserData = ArrayList<ListInputData>()
 
         private val token = stringPreferencesKey("token")
         private val id = intPreferencesKey("id")

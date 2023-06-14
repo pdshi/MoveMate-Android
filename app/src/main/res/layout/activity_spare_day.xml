@@ -4,22 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.workout.SpareDayActivity"
+    tools:context=".ui.bio.SpareDayActivity"
     android:background="@color/orange">
 
     <com.stevennt.movemate.ui.utils.CustomButton
-        android:id="@+id/name_button3"
+        android:id="@+id/btn_spare"
         android:layout_width="130dp"
         android:layout_height="40dp"
-        android:layout_marginTop="72dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="56dp"
         android:backgroundTint="@color/gray"
         android:fontFamily="@font/helvetica_neue_bold"
         android:hint="@string/next"
         android:textAllCaps="false"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_day3" />
+        app:layout_constraintTop_toBottomOf="@+id/et_spare_day" />
 
     <EditText
         android:id="@+id/et_goal_weight"
@@ -32,12 +32,32 @@
         android:hint="@string/weight_kg"
         android:inputType="number"
         android:textAlignment="viewEnd"
-        android:textColorHint="@color/offWhite"
-        android:textSize="14sp"
+        android:textColorHint="#FFA78F"
+        android:textColor="@color/offWhite"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+
+    <EditText
+        android:id="@+id/et_spare_day"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/offWhite"
+        android:ems="10"
+        android:fontFamily="@font/helvetica_neue_bold"
+        android:inputType="number"
+        android:textAlignment="viewEnd"
+        android:hint="range (3-7 days)"
+        android:textColorHint="#FFA78F"
+        android:textColor="@color/offWhite"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <TextView
         android:id="@+id/textView9"
@@ -54,7 +74,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/back_name4"
+        android:id="@+id/back_spare"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="24dp"
@@ -82,148 +102,13 @@
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/spare_days"
+        android:layout_marginTop="40dp"
         android:fontFamily="@font/helvetica_neue_bold"
+        android:text="@string/spare_days"
         android:textColor="@color/offWhite"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_goal_weight" />
-
-    <ImageView
-        android:id="@+id/iv_day1"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="90dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
-        app:srcCompat="@drawable/ic_circle_offwhite"
-        android:clickable="true"
-        android:focusable="true"/>
-
-    <ImageView
-        android:id="@+id/iv_day2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toEndOf="@+id/iv_day1"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
-        app:srcCompat="@drawable/ic_circle_offwhite"
-        android:clickable="true"
-        android:focusable="true"/>
-
-    <ImageView
-        android:id="@+id/iv_day3"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toEndOf="@+id/iv_day2"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
-        app:srcCompat="@drawable/ic_circle_offwhite"
-        android:clickable="true"
-        android:focusable="true"/>
-
-    <ImageView
-        android:id="@+id/iv_day4"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toEndOf="@+id/iv_day3"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
-        app:srcCompat="@drawable/ic_circle_offwhite"
-        android:clickable="true"
-        android:focusable="true"/>
-
-    <ImageView
-        android:id="@+id/iv_day5"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toEndOf="@+id/iv_day4"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
-        app:srcCompat="@drawable/ic_circle_offwhite"
-        android:clickable="true"
-        android:focusable="true"/>
-
-    <TextView
-        android:id="@+id/tv_day1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/helvetica_neue_bold"
-        android:text="1"
-        android:textColor="@color/orange"
-        android:textSize="20sp"
-        android:layout_marginLeft="1dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_day1"
-        app:layout_constraintEnd_toEndOf="@+id/iv_day1"
-        app:layout_constraintHorizontal_bias="0.448"
-        app:layout_constraintStart_toStartOf="@+id/iv_day1"
-        app:layout_constraintTop_toTopOf="@+id/iv_day1" />
-
-    <TextView
-        android:id="@+id/tv_day2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/helvetica_neue_bold"
-        android:text="2"
-        android:textColor="@color/orange"
-        android:textSize="20sp"
-        android:layout_marginLeft="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_day2"
-        app:layout_constraintEnd_toEndOf="@+id/iv_day2"
-        app:layout_constraintHorizontal_bias="0.448"
-        app:layout_constraintStart_toStartOf="@+id/iv_day2"
-        app:layout_constraintTop_toTopOf="@+id/iv_day2" />
-
-    <TextView
-        android:id="@+id/tv_day3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/helvetica_neue_bold"
-        android:text="3"
-        android:textColor="@color/orange"
-        android:textSize="20sp"
-        android:layout_marginLeft="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_day3"
-        app:layout_constraintEnd_toEndOf="@+id/iv_day3"
-        app:layout_constraintHorizontal_bias="0.448"
-        app:layout_constraintStart_toStartOf="@+id/iv_day3"
-        app:layout_constraintTop_toTopOf="@+id/iv_day3" />
-
-    <TextView
-        android:id="@+id/tv_day4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/helvetica_neue_bold"
-        android:text="4"
-        android:textColor="@color/orange"
-        android:textSize="20sp"
-        android:layout_marginLeft="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_day4"
-        app:layout_constraintEnd_toEndOf="@+id/iv_day4"
-        app:layout_constraintHorizontal_bias="0.448"
-        app:layout_constraintStart_toStartOf="@+id/iv_day4"
-        app:layout_constraintTop_toTopOf="@+id/iv_day4" />
-
-    <TextView
-        android:id="@+id/tv_day5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/helvetica_neue_bold"
-        android:text="5"
-        android:textColor="@color/orange"
-        android:textSize="20sp"
-        android:layout_marginLeft="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_day5"
-        app:layout_constraintEnd_toEndOf="@+id/iv_day5"
-        app:layout_constraintHorizontal_bias="0.448"
-        app:layout_constraintStart_toStartOf="@+id/iv_day5"
-        app:layout_constraintTop_toTopOf="@+id/iv_day5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

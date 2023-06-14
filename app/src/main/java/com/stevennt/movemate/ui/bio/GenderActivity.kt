@@ -6,10 +6,9 @@ import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
 import com.stevennt.movemate.R
+import com.stevennt.movemate.data.model.userDataArray
 import com.stevennt.movemate.databinding.ActivityGenderBinding
-import com.stevennt.movemate.databinding.ActivityLoginBinding
-import com.stevennt.movemate.ui.auth.RegisterActivity
-import com.stevennt.movemate.ui.home.HomeActivity
+import com.stevennt.movemate.preference.UserPreferences.Companion.InputUserData
 
 @Suppress("DEPRECATION")
 class GenderActivity : AppCompatActivity() {
@@ -29,7 +28,14 @@ class GenderActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         binding.ivMale.setOnClickListener{
-            val intent = Intent(this, HomeActivity::class.java)
+            userDataArray[0].gender = "male"
+            val intent = Intent(this, NameActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.ivFemale.setOnClickListener{
+            userDataArray[0].gender = "female"
+            val intent = Intent(this, NameActivity::class.java)
             startActivity(intent)
         }
     }
