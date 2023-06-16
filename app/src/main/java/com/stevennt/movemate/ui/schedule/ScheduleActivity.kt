@@ -88,6 +88,7 @@ class ScheduleActivity : AppCompatActivity() {
 
         binding.tvEnddate.setOnClickListener {
             userHistories.clear()
+            isDataFetched = false
             showDatePickerDialog(false)
         }
 

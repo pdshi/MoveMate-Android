@@ -37,10 +37,5 @@ class GenderActivity : AppCompatActivity() {
             val intent = Intent(this, NameActivity::class.java)
             startActivity(intent)
         }
-
-        binding.backGender.setOnClickListener{
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-        }
     }
 }

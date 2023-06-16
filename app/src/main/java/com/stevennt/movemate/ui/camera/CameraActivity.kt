@@ -344,24 +344,27 @@ class CameraActivity : AppCompatActivity() {
                                     convertPoseLabels(if (it.size >= 2) it[1] else null)
                                 )
 
-                                if (it[0].first == "down" && it[0].second.toDouble() == 1.0) {
+                                /*if (it[0].first == "down" && it[0].second.toDouble() == 1.0) {
                                     counter++
                                     runOnUiThread{
                                         tvCounter.text = counter.toString()
                                     }
-                                    Log.d("counter", counter.toString())
-                                }
-
-                                /*if (it[0].first == "down" && it[0].second.toDouble() == 1.0) {
-                                    Log.d("name", it[0].first)
-                                    if (it[1].first == "up" && it[1].second.toDouble() == 1.0) {
-                                        counter++
-                                        runOnUiThread{
-                                        tvCounter.text = counter.toString()
-                                        }
-                                        Log.d("counter", counter.toString())
-                                    }
+                                    //Log.d("counter", counter.toString())
                                 }*/
+
+                                if (it[0].first == "down" && it[0].second.toDouble() >= 0.95) {
+                                    Log.d("name", it[0].first)
+                                    if (it.size >= 2 && it[0].first == "up") {
+                                        val secondPoseScore = it[1].second.toDouble()
+                                        if (secondPoseScore >= 0.95) {
+                                            counter++
+                                            runOnUiThread {
+                                                tvCounter.text = counter.toString()
+                                            }
+                                        }
+                                        //Log.d("counter", counter.toString())
+                                    }
+                                }
                             }
                         }
 
@@ -383,19 +386,17 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun isPoseClassifier() {
-        if(currentWorkoutIndex == 1){
+        if(currentWorkoutIndex == 0){
             cameraSource?.setClassifier(if (isClassifyPose) PoseClassifier.create(this,
                 "pose_classifier_situp.tflite", "pose_labels.txt") else null)
-
+            //Log.d("index pose class 0", currentWorkoutIndex.toString())
             currentWorkoutIndex = 1
-            Log.d("index pose class 0", currentWorkoutIndex.toString())
             tvWorkout.text = "Sit Up: "
-        } else if (currentWorkoutIndex == 0) {
+        } else if (currentWorkoutIndex == 1) {
             cameraSource?.setClassifier(if (isClassifyPose) PoseClassifier.create(this,
                 "pose_classifier_pushup.tflite", "pose_labels.txt") else null)
-
+            //Log.d("index pose class 1", currentWorkoutIndex.toString())
             currentWorkoutIndex = 0
-            Log.d("index pose class 1", currentWorkoutIndex.toString())
             tvWorkout.text = "Push Up: "
         }
 
