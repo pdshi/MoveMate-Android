@@ -27,6 +27,9 @@ Clone this repository and import to Android Studio
 https://github.com/pdshi/MoveMate-Android.git
 ```
 
+## Preview
+![homepage_google-pixel4-clearlywhite-portrait](https://github.com/pdshi/MoveMate-Android/assets/85666915/fb46da67-f58f-4f2a-bb57-5549a6811c5f)
+
 ## Credits
 - [Image Assets](https://www.freepik.com/)
 
