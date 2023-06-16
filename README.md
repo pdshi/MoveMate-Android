@@ -27,3 +27,6 @@ Clone this repository and import to Android Studio
 https://github.com/pdshi/MoveMate-Android.git
 ```
 
+## Credits
+- [Image Assets](https://www.freepik.com/)
+
